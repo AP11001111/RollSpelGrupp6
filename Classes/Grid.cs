@@ -20,6 +20,7 @@ namespace RollSpelGrupp6.Classes
 
         public void GenerateGrid()
         {
+            Console.CursorVisible = false;
             GameGrid[0] = GameGrid[0].Select(c => '_').ToArray();
             GameGrid[^1] = GameGrid[^1].Select(c => '_').ToArray();
             for (int i = 1; i < GameGrid.Length - 1; i++)
