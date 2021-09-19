@@ -1,0 +1,83 @@
+﻿using RollSpelGrupp6.Structures;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading;
+
+namespace RollSpelGrupp6.Classes
+{
+    internal class UI
+    {
+        public Grid GameGrid { get; set; }
+        public Player Player { get; set; }
+        public bool StopGame { get; set; }
+        private Coordinate NewPlayerLocation;
+
+        public UI()
+        {
+            GameGrid = new Grid();
+            Player = new Player();
+            StopGame = false;
+            NewPlayerLocation = new Coordinate();
+        }
+
+        public void StartUI()
+        {
+            GameGrid.GenerateGrid();
+            GameGrid.PrintGrid();
+            while (!StopGame)
+            {
+                MovePlayer();
+            }
+        }
+
+        private void MovePlayer()
+        {
+            var keyPressed = Console.ReadKey(true).Key;
+            switch (keyPressed)
+            {
+                case ConsoleKey.UpArrow:
+                    NewPlayerLocation.SetCoordinate(Player.Location.Row - 1, Player.Location.Col);
+                    Move();
+                    break;
+
+                case ConsoleKey.DownArrow:
+                    NewPlayerLocation.SetCoordinate(Player.Location.Row + 1, Player.Location.Col);
+                    Move();
+                    break;
+
+                case ConsoleKey.LeftArrow:
+                    NewPlayerLocation.SetCoordinate(Player.Location.Row, Player.Location.Col - 1);
+                    Move();
+                    break;
+
+                case ConsoleKey.RightArrow:
+                    NewPlayerLocation.SetCoordinate(Player.Location.Row, Player.Location.Col + 1);
+                    Move();
+                    break;
+
+                case ConsoleKey.Escape:
+                    Console.SetCursorPosition(0, 19);
+                    StopGame = true;
+                    break;
+            }
+        }
+
+        private void Move()
+        {
+            if ((NewPlayerLocation.Row >= 0
+                && NewPlayerLocation.Row < GameGrid.GameGrid.Length))
+            {
+                if (!(GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col] == '_' ||
+                GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col] == '|'))
+                {
+                    Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
+                    Console.Write('*');
+                    Console.SetCursorPosition(NewPlayerLocation.Col, NewPlayerLocation.Row);
+                    Console.Write('@');
+                    Player.Location.SetCoordinate(NewPlayerLocation.Row, NewPlayerLocation.Col);
+                }
+            }
+        }
+    }
+}

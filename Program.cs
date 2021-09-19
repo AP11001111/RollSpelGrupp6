@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RollSpelGrupp6.Classes;
+using System;
+using System.Linq;
 
 namespace RollSpelGrupp6
 {
@@ -6,7 +8,8 @@ namespace RollSpelGrupp6
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            UI gameUI = new UI();
+            gameUI.StartUI();
         }
     }
 }
