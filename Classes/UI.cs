@@ -37,21 +37,25 @@ namespace RollSpelGrupp6.Classes
             switch (keyPressed)
             {
                 case ConsoleKey.UpArrow:
+                case ConsoleKey.W:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row - 1, Player.Location.Col);
                     Move();
                     break;
 
                 case ConsoleKey.DownArrow:
+                case ConsoleKey.S:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row + 1, Player.Location.Col);
                     Move();
                     break;
 
                 case ConsoleKey.LeftArrow:
+                case ConsoleKey.A:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row, Player.Location.Col - 1);
                     Move();
                     break;
 
                 case ConsoleKey.RightArrow:
+                case ConsoleKey.D:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row, Player.Location.Col + 1);
                     Move();
                     break;
