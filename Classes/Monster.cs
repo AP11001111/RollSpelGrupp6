@@ -7,7 +7,6 @@ namespace RollSpelGrupp6.Classes
 {
     class Monster : Figure
     {
-        public Coordinate Location { get; set; }
         public Monster()
         {
             Location = new Coordinate(5, 5);

@@ -20,25 +20,17 @@ namespace RollSpelGrupp6.Classes
         public UI()
         {
             GameGrid = new Grid();
-            Player = new Player(1, 1); //Setting input parameter as (1,1) to avoid the error
+            Player = new Player(); //Setting input parameter as (1,1) to avoid the error
             FightUI = new FightUI();
             StopGame = false;
             NewMonsterLocation = new Coordinate();
             NewPlayerLocation = new Coordinate();
         }
 
-        private void MonsterLocationSetup()
-        {
-            NewMonsterLocation.SetCoordinate(5, 5);
-            Console.SetCursorPosition(Monster.Location.Col, Monster.Location.Row);
-            Console.Write('X');
-        }
-
         public void StartUI()
         {
             GameGrid.GenerateGrid();
             GameGrid.PrintGrid();
-            MonsterLocationSetup();
             while (!StopGame)
             {
                 TakeInput();

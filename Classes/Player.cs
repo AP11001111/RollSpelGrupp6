@@ -14,8 +14,6 @@ namespace RollSpelGrupp6.Classes
         {
             Location = new Coordinate(1, 1);
 
-            Weapon = sword;
-            Armor = helm;
             PlayerBag = new Bag();
             Initiate();
             Setup();
