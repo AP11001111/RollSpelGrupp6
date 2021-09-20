@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RollSpelGrupp6.Structures
 {
-    internal class Coordinate
+    public class Coordinate
     {
         public int Row { get; set; }
         public int Col { get; set; }

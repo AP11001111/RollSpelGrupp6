@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RollSpelGrupp6.Classes
 {
     internal class UI
     {
+        public FightUI FightUI { get; set; }
         public Grid GameGrid { get; set; }
         public Player Player { get; set; }
         public Monster Monster { get; set; }
@@ -18,8 +20,8 @@ namespace RollSpelGrupp6.Classes
         public UI()
         {
             GameGrid = new Grid();
-            Player = new Player();
-            Monster = new Monster();
+            Player = new Player(1, 1); //Setting input parameter as (1,1) to avoid the error
+            FightUI = new FightUI();
             StopGame = false;
             NewMonsterLocation = new Coordinate();
             NewPlayerLocation = new Coordinate();
@@ -39,11 +41,15 @@ namespace RollSpelGrupp6.Classes
             MonsterLocationSetup();
             while (!StopGame)
             {
-                MovePlayer();
+                TakeInput();
+                if (Player.PlayerBag.IsContentUpdated)
+                {
+                    //update the bag shown on screen
+                }
             }
         }
 
-        private void MovePlayer()
+        private void TakeInput()
         {
             var keyPressed = Console.ReadKey(true).Key;
             switch (keyPressed)
@@ -51,35 +57,47 @@ namespace RollSpelGrupp6.Classes
                 case ConsoleKey.UpArrow:
                 case ConsoleKey.W:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row - 1, Player.Location.Col);
-                    Move();
+                    MovePlayer();
                     break;
 
                 case ConsoleKey.DownArrow:
                 case ConsoleKey.S:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row + 1, Player.Location.Col);
-                    Move();
+                    MovePlayer();
                     break;
 
                 case ConsoleKey.LeftArrow:
                 case ConsoleKey.A:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row, Player.Location.Col - 1);
-                    Move();
+                    MovePlayer();
                     break;
 
                 case ConsoleKey.RightArrow:
                 case ConsoleKey.D:
                     NewPlayerLocation.SetCoordinate(Player.Location.Row, Player.Location.Col + 1);
-                    Move();
+                    MovePlayer();
                     break;
 
                 case ConsoleKey.Escape:
                     Console.SetCursorPosition(0, 19);
                     StopGame = true;
                     break;
+
+                case ConsoleKey.D1:
+                    //Implement part for choosing equipment
+
+                    //internal void SetEquipment(int equipmentType)
+                    //{
+                    //    //Take equipment position from user
+                    //    //PlayerBag.BagContents[equipmentType - 1][equipmentPosition] as current equipment
+                    //    throw new NotImplementedException();
+                    //}
+                    //Player.SetEquipment(1);
+                    break;
             }
         }
 
-        private void Move()
+        private void MovePlayer()
         {
             if ((NewPlayerLocation.Row >= 0
                 && NewPlayerLocation.Row < GameGrid.GameGrid.Length))

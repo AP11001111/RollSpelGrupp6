@@ -1,13 +1,11 @@
 ﻿using RollSpelGrupp6.Structures;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
     internal class Player : Figure
     {
-        public Coordinate Location { get; set; }
+        public Bag PlayerBag { get; set; }
         public int Experience { get; set; }
         public int ExperienceBreakpoint { get; set; }
 
@@ -16,6 +14,9 @@ namespace RollSpelGrupp6.Classes
         {
             Location = new Coordinate(1, 1);
 
+            Weapon = sword;
+            Armor = helm;
+            PlayerBag = new Bag();
             Initiate();
             Setup();
         }
@@ -76,15 +77,6 @@ namespace RollSpelGrupp6.Classes
         {
             Initiate();
             Setup();
-        }
-
-        public void EquipWeapon(int sword)
-        {
-            AttackPower += sword;
-        }
-        public void EquipArmor(int helm)
-        {
-            Armor += helm;
         }
     }
 }
