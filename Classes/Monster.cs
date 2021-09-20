@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RollSpelGrupp6.Structures;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,10 +7,18 @@ namespace RollSpelGrupp6.Classes
 {
     class Monster : Figure
     {
-        public Monster(int level)
+        public Coordinate Location { get; set; }
+        public Monster()
         {
-            Level = level;
+            Location = new Coordinate(5, 5);
+
+            SetLevel(1);
             Initiate();
+        }
+
+        private void SetLevel(int level)
+        {
+            Level = Level;
         }
 
         public override void Attack(Figure figure)
@@ -24,6 +33,7 @@ namespace RollSpelGrupp6.Classes
             if (HealthPoints <= 0)
             {
                 Console.WriteLine("Monster died!");
+                //Gain experience();
                 //Ta bort från spelplan();
             }
         }

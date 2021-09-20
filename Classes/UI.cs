@@ -10,21 +10,33 @@ namespace RollSpelGrupp6.Classes
     {
         public Grid GameGrid { get; set; }
         public Player Player { get; set; }
+        public Monster Monster { get; set; }
         public bool StopGame { get; set; }
         private Coordinate NewPlayerLocation;
+        private Coordinate NewMonsterLocation;
 
         public UI()
         {
             GameGrid = new Grid();
             Player = new Player();
+            Monster = new Monster();
             StopGame = false;
+            NewMonsterLocation = new Coordinate();
             NewPlayerLocation = new Coordinate();
+        }
+
+        private void MonsterLocationSetup()
+        {
+            NewMonsterLocation.SetCoordinate(5, 5);
+            Console.SetCursorPosition(Monster.Location.Col, Monster.Location.Row);
+            Console.Write('X');
         }
 
         public void StartUI()
         {
             GameGrid.GenerateGrid();
             GameGrid.PrintGrid();
+            MonsterLocationSetup();
             while (!StopGame)
             {
                 MovePlayer();

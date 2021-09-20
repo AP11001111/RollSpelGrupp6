@@ -11,17 +11,16 @@ namespace RollSpelGrupp6.Classes
         public int Experience { get; set; }
         public int ExperienceBreakpoint { get; set; }
 
-        public Player(int sword, int helm)
+        //Constructor
+        public Player()
         {
             Location = new Coordinate(1, 1);
-
-            Weapon = sword;
-            Armor = helm;
 
             Initiate();
             Setup();
         }
 
+        //Sets a character to beginning, level 1
         private void Initiate()
         {
             Level = 1;
@@ -29,12 +28,14 @@ namespace RollSpelGrupp6.Classes
             ExperienceBreakpoint = 4;
         }
 
+        //Recalculates the stats
         private void Setup()
         {
             HealthPoints = 2 * Level + Weapon;
             AttackPower = (1 * Level) + Armor;
         }
 
+        //
         public void GainExperience(int monsterLevel)
         {
             Experience = 2 * monsterLevel;
@@ -51,12 +52,14 @@ namespace RollSpelGrupp6.Classes
             Setup();
         }
 
+        //Player attacks
         public override void Attack(Figure figure)
         {
             figure.TakeDamage(AttackPower);
             Console.WriteLine($"Du gör {AttackPower} skada på Monster. Den har {figure.HealthPoints} left!");
         }
 
+        //Player takes damage
         public override void TakeDamage(int damage)
         {
             HealthPoints -= damage - Armor;
@@ -68,10 +71,20 @@ namespace RollSpelGrupp6.Classes
             }
         }
 
+        //Respawns the player back to level 1
         public void Respawn()
         {
             Initiate();
             Setup();
+        }
+
+        public void EquipWeapon(int sword)
+        {
+            AttackPower += sword;
+        }
+        public void EquipArmor(int helm)
+        {
+            Armor += helm;
         }
     }
 }

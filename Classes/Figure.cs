@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RollSpelGrupp6.Structures;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

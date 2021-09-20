@@ -14,3 +14,15 @@ C:\Users\IBAMPA\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrup
 C:\Users\IBAMPA\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.genruntimeconfig.cache
 C:\Users\Martin\Source\Repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.dll
 C:\Users\Martin\Source\Repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.pdb
+C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\RollSpelGrupp6.exe
+C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\RollSpelGrupp6.deps.json
+C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\RollSpelGrupp6.runtimeconfig.json
+C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\RollSpelGrupp6.runtimeconfig.dev.json
+C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\RollSpelGrupp6.dll
+C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\RollSpelGrupp6.pdb
+C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.csproj.AssemblyReference.cache
+C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.AssemblyInfoInputs.cache
+C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.AssemblyInfo.cs
+C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.csproj.CoreCompileInputs.cache
+C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.genruntimeconfig.cache
