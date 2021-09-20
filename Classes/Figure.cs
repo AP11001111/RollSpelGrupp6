@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RollSpelGrupp6.Structures;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,6 +7,7 @@ namespace RollSpelGrupp6.Classes
 {
     public abstract class Figure
     {
+        public Coordinate Location { get; set; }
         public int HealthPoints { get; set; }
         public int AttackPower { get; set; }
         public int Level { get; set; }
