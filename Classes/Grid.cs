@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RollSpelGrupp6.Structures;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,17 @@ namespace RollSpelGrupp6.Classes
     internal class Grid
     {
         public char[][] GameGrid { get; set; }
+        public List<Monster> Monsters { get; set; }
 
         public Grid()
         {
+            Monsters = new List<Monster>()
+            {
+                new Monster(1,3,3),
+                new Monster(3,13,30),
+                new Monster(10,9,23),
+                new Monster(20,3,37)
+            };
             GameGrid = new char[18][];
             for (int i = 0; i < GameGrid.Length; i++)
             {

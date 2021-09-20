@@ -5,13 +5,13 @@ using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
-    class Monster : Figure
+    internal class Monster : Figure
     {
-        public Monster()
+        public Monster(int level, int row, int col)
         {
-            Location = new Coordinate(5, 5);
+            Location = new Coordinate(row, col);
 
-            SetLevel(1);
+            SetLevel(level);
             Initiate();
         }
 

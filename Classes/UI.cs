@@ -97,6 +97,14 @@ namespace RollSpelGrupp6.Classes
                 if (!(GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col] == '_' ||
                 GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col] == '|'))
                 {
+                    foreach (Monster monster in GameGrid.Monsters)
+                    {
+                        if (NewPlayerLocation.Row == monster.Location.Row && NewPlayerLocation.Col == monster.Location.Row)
+                        {
+                            Console.SetCursorPosition(0, 19);
+                            StartFight(monster);
+                        }
+                    }
                     Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
                     Console.Write('*');
                     Console.SetCursorPosition(NewPlayerLocation.Col, NewPlayerLocation.Row);
@@ -104,6 +112,14 @@ namespace RollSpelGrupp6.Classes
                     Player.Location.SetCoordinate(NewPlayerLocation.Row, NewPlayerLocation.Col);
                 }
             }
+        }
+
+        private void StartFight(Monster monster)
+        {
+            //Player.DecreaseHP(10);
+            //Player.IncreaseHP(10);
+            Console.WriteLine("Nu slår vi monstern!!!");
+            Thread.Sleep(2000);
         }
     }
 }
