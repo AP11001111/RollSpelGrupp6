@@ -26,64 +26,10 @@ namespace RollSpelGrupp6.Classes
         public int LowCrit { get; set; }
         public int HighCrit { get; set; }
 
-        public Equipment(Player hero)
-        {
-            Player = hero;
-        }
-
-        public Equipment()
-        {
-        }
-
-        //public void DressThePlayer()
+        // Equipments Level bör finnas som en property då vi vill använda den i ToString() för att visa i Inventory
+        //public override string ToString()
         //{
-        //    Weapon myWeapon = new Weapon();
-        //    CheckStuff(myWeapon);
-        //    Helmet myHelmet = new Helmet();
-        //    CheckStuff(myHelmet);
-        //    Armor myArmor = new Armor();
-        //    CheckStuff(myArmor);
-        //    Console.WriteLine("Tryck för att fortsätta.\n");
-        //    Console.ReadLine();
-        //    Console.Clear();
-        //    Player.Weapon = myWeapon;
-        //    Player.Helmet = myHelmet;
-        //    Player.Armor = myArmor;
-        //}
-
-        //public static Monster DressTheMonster(Monster enemy)
-        //{
-        //    Weapon myWeapon = new Weapon();
-        //    CheckStuff(myWeapon);
-        //    Helmet myHelmet = new Helmet();
-        //    CheckStuff(myHelmet);
-        //    Armor myArmor = new Armor();
-        //    CheckStuff(myArmor);
-        //    Console.WriteLine("Tryck för att fortsätta.\n");
-        //    Console.ReadLine();
-        //    Console.Clear();
-        //    enemy.Weapon = myWeapon;
-        //    enemy.Helmet = myHelmet;
-        //    enemy.Armor = myArmor;
-        //    return enemy;
-        //}
-
-        //public static void CheckStuff(Equipment equipment)
-        //{
-        //    Console.WriteLine($"Type: {equipment.Name}");
-
-        //    if (equipment is Weapon)
-        //    {
-        //        Console.WriteLine($"Damage: {equipment.LowDamage} - {equipment.HighDamage}");
-        //        Console.WriteLine($"Crit Chance: {equipment.CritChance} %");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine($"Defence: {equipment.Defence}");
-        //        Console.WriteLine($"Extra stuff: {equipment.HP} HP");
-        //    }
-
-        //    Console.WriteLine();
+        //    return $"{Name} (Lv. {Level})";
         //}
     }
 
