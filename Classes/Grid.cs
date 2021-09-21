@@ -63,23 +63,39 @@ namespace RollSpelGrupp6.Classes
             }
             GameGrid[^1][0] = '|';
             GameGrid[^1][^1] = '|';
-            GameGrid[1][1] = '@';
+            //GameGrid[1][1] = '@';
         }
 
         public void PrintGrid()
         {
-            foreach (char[] array in GameGrid)
+            for (int i = 0; i < GameGrid.Length; i++)
             {
-                foreach (char c in array)
+                for (int j = 0; j < GameGrid[i].Length; j++)
                 {
-                    Console.Write(c);
+                    bool isMonster = false;
+                    foreach (Monster monster in Monsters)
+                    {
+                        if (monster.Location.Equals(new Coordinate(i, j)))
+                        {
+                            isMonster = true;
+                            Console.Write("X");
+                        }
+                    }
+                    if (!isMonster)
+                    {
+                        Console.Write(GameGrid[i][j]);
+                    }
                 }
                 Console.Write("\n");
             }
-        }
-
-        public void ShowUpdatedPlayerLocation()
-        {
+            //foreach (char[] array in GameGrid)
+            //{
+            //    foreach (char c in array)
+            //    {
+            //        Console.Write(c);
+            //    }
+            //    Console.Write("\n");
+            //}
         }
     }
 }

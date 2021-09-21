@@ -9,6 +9,10 @@ namespace RollSpelGrupp6
     {
         private static void Main(string[] args)
         {
+            //Player player = new Player();
+            //player.PlayerInventory.PutItem(new Weapon());
+            //player.PlayerInventory.PrintInventory();
+            //Thread.Sleep(2000);
             UI gameUI = new UI();
             gameUI.StartUI();
         }

@@ -1,9 +1,6 @@
 ﻿using RollSpelGrupp6.Structures;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -14,16 +11,16 @@ namespace RollSpelGrupp6.Classes
         public Player Player { get; set; }
         public Monster Monster { get; set; }
         public bool StopGame { get; set; }
+        public bool IsConsoleCleared { get; set; }
         private Coordinate NewPlayerLocation;
-        private Coordinate NewMonsterLocation;
 
         public UI()
         {
             GameGrid = new Grid();
             Player = new Player(); //Setting input parameter as (1,1) to avoid the error
-            FightUI = new FightUI();
+            //FightUI = new FightUI(Player);
             StopGame = false;
-            NewMonsterLocation = new Coordinate();
+            IsConsoleCleared = false;
             NewPlayerLocation = new Coordinate();
         }
 
@@ -31,10 +28,24 @@ namespace RollSpelGrupp6.Classes
         {
             GameGrid.GenerateGrid();
             GameGrid.PrintGrid();
+            Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
+            Console.WriteLine("@");
+            Console.SetCursorPosition(0, 19);
+            Player.PlayerInventory.PrintInventory();
             while (!StopGame)
             {
+                if (IsConsoleCleared)
+                {
+                    Console.Clear();
+                    GameGrid.PrintGrid();
+                    Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
+                    Console.WriteLine("@");
+                    Console.SetCursorPosition(0, 19);
+                    Player.PlayerInventory.PrintInventory();
+                    IsConsoleCleared = false;
+                }
                 TakeInput();
-                if (Player.PlayerBag.IsContentUpdated)
+                if (Player.PlayerInventory.IsContentUpdated)
                 {
                     //update the bag shown on screen
                 }
@@ -71,11 +82,12 @@ namespace RollSpelGrupp6.Classes
                     break;
 
                 case ConsoleKey.Escape:
-                    Console.SetCursorPosition(0, 19);
+                    Console.SetCursorPosition(0, 29);
                     StopGame = true;
                     break;
 
-                case ConsoleKey.D1:
+                case ConsoleKey.I:
+
                     //Implement part for choosing equipment
 
                     //internal void SetEquipment(int equipmentType)
@@ -99,14 +111,22 @@ namespace RollSpelGrupp6.Classes
                 {
                     foreach (Monster monster in GameGrid.Monsters)
                     {
-                        if (NewPlayerLocation.Row == monster.Location.Row && NewPlayerLocation.Col == monster.Location.Row)
+                        //if (NewPlayerLocation.Row == monster.Location.Row && NewPlayerLocation.Col == monster.Location.Row)
+                        if (NewPlayerLocation.Equals(monster.Location))
                         {
-                            Console.SetCursorPosition(0, 19);
-                            StartFight(monster);
+                            Console.SetCursorPosition(72, 0);
+                            //StartFight(monster);
+                            FightUI = new FightUI(Player, monster);
+                            Console.Clear();
+                            FightUI.Combat();
+                            Console.Clear();
+                            GameGrid.Monsters.Remove(monster);
+                            IsConsoleCleared = true;
+                            break;
                         }
                     }
                     Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
-                    Console.Write('*');
+                    Console.Write(' ');
                     Console.SetCursorPosition(NewPlayerLocation.Col, NewPlayerLocation.Row);
                     Console.Write('@');
                     Player.Location.SetCoordinate(NewPlayerLocation.Row, NewPlayerLocation.Col);
@@ -116,6 +136,7 @@ namespace RollSpelGrupp6.Classes
 
         private void StartFight(Monster monster)
         {
+            Console.Clear();
             //Player.DecreaseHP(10);
             //Player.IncreaseHP(10);
             Console.WriteLine("Nu slår vi monstern!!!");

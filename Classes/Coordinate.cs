@@ -24,5 +24,17 @@ namespace RollSpelGrupp6.Structures
             Row = row;
             Col = col;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Coordinate coordinate &&
+                   Row == coordinate.Row &&
+                   Col == coordinate.Col;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Row, Col);
+        }
     }
 }
