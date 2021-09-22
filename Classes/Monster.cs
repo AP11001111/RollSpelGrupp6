@@ -18,6 +18,12 @@ namespace RollSpelGrupp6.Classes
             //Initiate();
         }
 
+        //Preparations
+        public void PrepareMonster()
+        {
+            Defence = Helmet.Defence + Armor.Defence;
+            HP = Helmet.HP + Armor.HP;
+        }
         //private void SetLevel(int level)
         //{
         //    Level = Level;

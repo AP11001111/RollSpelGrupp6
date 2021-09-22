@@ -10,8 +10,6 @@ namespace RollSpelGrupp6.Classes
         public string Name { get; set; }
         public Coordinate Location { get; set; }
 
-        //public int HealthPoints { get; set; }
-        //public int AttackPower { get; set; }
         public int HP { get; set; }
 
         public int Damage { get; set; }
@@ -19,16 +17,10 @@ namespace RollSpelGrupp6.Classes
         public int Dodge { get; set; }
         public int Level { get; set; }
 
-        //public int Weapon { get; set; }
-        //public int Armor { get; set; }
         public Weapon Weapon { get; set; }
 
         public Armor Armor { get; set; }
         public Helmet Helmet { get; set; }
-
-        //public abstract void TakeDamage(int damage);
-
-        //public abstract void Attack(Figure character);
 
         public void Preparations()
         {
@@ -68,6 +60,51 @@ namespace RollSpelGrupp6.Classes
             }
 
             Console.WriteLine();
+        }
+
+        public int DoDamage()
+        {
+            bool hitOrMiss = HitOrMIss();
+            if (!hitOrMiss)
+            {
+                Console.WriteLine("Du missade!");
+                return 0;
+            }
+            int critHit = Generator.OneToHundred();
+            Damage = Generator.RandomNumber(this.Weapon.LowDamage, this.Weapon.HighDamage);
+
+            if (this.Weapon.CritChance >= critHit)
+            {
+                Console.WriteLine("Critical Hit!");
+                Damage *= 2; // Om Critdamage
+
+                return Damage;
+            }
+            return Damage;
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (damage > (Armor.HP + Helmet.HP))
+            {
+                HP -= damage - (Armor.HP + Helmet.HP);
+            }
+
+            if (HP < 0)
+            {
+                HP = 0;
+            }
+        }
+        public bool HitOrMIss()
+        {
+            //int hit = Generator.OneToHundred();
+            int hit = Generator.OneToHundred();
+            if (hit < Dodge)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

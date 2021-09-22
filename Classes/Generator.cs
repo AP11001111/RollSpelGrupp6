@@ -18,7 +18,7 @@ namespace RollSpelGrupp6
             return Rnd.Next(lowNum, highNum + 1);
         }
 
-        public int OneToHundred()
+        public static int OneToHundred()
         {
             return Rnd.Next(1, 101);
         }

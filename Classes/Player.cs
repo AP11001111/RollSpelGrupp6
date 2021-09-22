@@ -5,9 +5,10 @@ namespace RollSpelGrupp6.Classes
 {
     public class Player : Figure
     {
+        private int baseHP = 100;
         public Inventory PlayerInventory { get; set; }
-        public int Experience { get; set; }
-        public int ExperienceBreakpoint { get; set; }
+        public int Experience { get; set; } = 0;
+        public int ExperienceBreakpoint { get; set; } = 4;
         public Coordinate NewPlayerLocation { get; set; }
         //public Coordinate Location { get; set; }
 
@@ -17,8 +18,15 @@ namespace RollSpelGrupp6.Classes
             Location = new Coordinate(1, 1);
             Name = "Sir Kurt";
             Level = 1;
-            HP = 100;
+            HP = baseHP;
             Dodge = 5;
+        }
+
+        //Recalculates the stats
+        private void PreparePlayer()
+        {
+            Defence = Helmet.Defence + Armor.Defence;
+            HP = Helmet.HP + Armor.HP;
         }
     }
 
@@ -46,12 +54,7 @@ namespace RollSpelGrupp6.Classes
     //        ExperienceBreakpoint = 4;
     //    }
 
-    //    //Recalculates the stats
-    //    private void Setup()
-    //    {
-    //        HealthPoints = 2 * Level + Weapon;
-    //        AttackPower = (1 * Level) + Armor;
-    //    }
+
 
     //    //
     //    public void GainExperience(int monsterLevel)

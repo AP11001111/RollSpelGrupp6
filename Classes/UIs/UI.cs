@@ -127,7 +127,6 @@ namespace RollSpelGrupp6.Classes
                         if (NewPlayerLocation.Equals(monster.Location))
                         {
                             GameGrid.IsFightUICurrentUI = true;
-                            Console.SetCursorPosition(72, 0);
                             Console.Clear();
                             FightUI.Combat(Player, monster);
                             Console.Clear();
@@ -147,15 +146,6 @@ namespace RollSpelGrupp6.Classes
                     Player.Location.SetCoordinate(NewPlayerLocation.Row, NewPlayerLocation.Col);
                 }
             }
-        }
-
-        private void StartFight(Monster monster)
-        {
-            Console.Clear();
-            //Player.DecreaseHP(10);
-            //Player.IncreaseHP(10);
-            Console.WriteLine("Nu slår vi monstern!!!");
-            Thread.Sleep(2000);
         }
     }
 }

@@ -29,6 +29,10 @@ namespace RollSpelGrupp6.Classes
             Monster.DressUp();
             Monster.Preparations();
 
+
+            
+
+
             while (combat)
             {
                 if (combat)
@@ -38,7 +42,10 @@ namespace RollSpelGrupp6.Classes
                     Console.WriteLine($"<<<[ ROND {rond} ]>>>\n");
                 }
 
-                PlayerAttacks(); // Hjälte anfaller
+                Monster.TakeDamage(Player.DoDamage());
+                
+                Console.WriteLine($"{Player.Name} inflicted {Player.Damage} damage to {Monster.Name}");
+                Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
 
                 if (Monster.HP < 1)
                 {
@@ -48,7 +55,10 @@ namespace RollSpelGrupp6.Classes
                 }
                 else
                 {
-                    MonsterAttacks();
+                    Player.TakeDamage(Monster.DoDamage());
+
+                    Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {Monster.Damage} skada");
+                    Console.WriteLine($"{Player.Name} har {Player.HP} HP left.\n");
                     //Console.WriteLine($"\nEfter Combat-Metoden har {Player.Name} {Player.HP} HP kvar.\n");
                 }
 
@@ -80,103 +90,6 @@ namespace RollSpelGrupp6.Classes
 
         public static void MonsterDefeated()
         {
-        }
-
-        public void PlayerAttacks()
-        {
-            bool hit = HitOrMIss(); //Kollar om man träffar eller missar
-
-            if (hit == false)
-            {
-                Console.WriteLine($"{Player.Name} missed.");
-            }
-
-            PlayerDamage();// Bestämmer hur hög skadan blir + crit
-            ActualDamageToMonster(); // Ser hur mycket HP som förloras genom att ta värdet på skadan minus värdet på skyddet.
-            //Det nya skadevärdet subtraheras från HP
-
-            Console.WriteLine($"{Player.Name} inflicted {Player.Damage} damage to {Monster.Name}");
-            Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
-        }
-
-        public void MonsterAttacks()
-        {
-            bool hit = HitOrMIss();
-
-            if (hit == false)
-            {
-                Console.WriteLine($"{Monster.Name} missed.");
-            }
-
-            MonsterDamage();
-            ActualDamageToPlayer();
-
-            Console.WriteLine($"{Monster.Name} inflicted {Monster.Damage} damage to {Player.Name}");
-            Console.WriteLine($"{Player.Name} has {Player.HP} HP left.\n");
-        }
-
-        public void PlayerDamage()
-        {
-            //int critHit = Generator.OneToHundred();
-            int critHit = Generator.OneToHundred();
-            Player.Damage = WeaponDamage(Player.Weapon.LowDamage, Player.Weapon.HighDamage);
-
-            if (Player.Weapon.CritChance >= critHit)
-            {
-                Console.WriteLine("Critical Hit!");
-                Player.Damage *= 2; // Om Critdamage
-            }
-        }
-
-        public void MonsterDamage()
-        {
-            //int critHit = Generator.OneToHundred();
-            int critHit = Generator.OneToHundred();
-            Monster.Damage = WeaponDamage(Monster.Weapon.LowDamage, Monster.Weapon.HighDamage);
-            if (Monster.Weapon.CritChance >= critHit)
-            {
-                Console.WriteLine("Critical Hit!");
-                Monster.Damage *= 2; // Om Critdamage
-            }
-        }
-
-        public static int WeaponDamage(int lowDamage, int highDamage)
-        {
-            return Generator.RandomNumber(lowDamage, highDamage + 1);
-        }
-
-        public bool HitOrMIss()
-        {
-            //int hit = Generator.OneToHundred();
-            int hit = Generator.OneToHundred();
-            if (hit < Monster.Dodge)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public void ActualDamageToMonster()
-        {
-            Player.Damage -= Monster.Defence;
-
-            if (Player.Damage < 0)
-            {
-                Player.Damage = 0;
-            }
-            Monster.HP = Monster.HP - Player.Damage;
-        }
-
-        public void ActualDamageToPlayer()
-        {
-            Monster.Damage -= Player.Defence;
-
-            if (Monster.Damage < 0)
-            {
-                Monster.Damage = 0;
-            }
-            Player.HP = Player.HP - Monster.Damage;
         }
     }
 }
