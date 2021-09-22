@@ -11,15 +11,15 @@ namespace RollSpelGrupp6.Classes
 
         public Generator Generator { get; set; }
 
-        public FightUI(Player player, Monster monster)
+        public FightUI(Generator generator)
+        {
+            Generator = generator;
+        }
+
+        public void Combat(Player player, Monster monster)
         {
             Player = player;
             Monster = monster;
-            Generator = new Generator();
-        }
-
-        public void Combat()
-        {
             int rond = 0;
             bool combat = true;
 

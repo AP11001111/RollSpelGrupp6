@@ -3,16 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RollSpelGrupp6.Classes
 {
     internal class Grid
     {
+        public Player Player { get; set; }
         public char[][] GameGrid { get; set; }
         public List<Monster> Monsters { get; set; }
+        public int MaxMonstersOnBoard { get; set; }
+        public bool IsMonsterSpawning { get; set; }
+        public bool IsFightUICurrentUI { get; set; }
+        public readonly object ListOfMonstersLock = new object();
 
-        public Grid()
+        public Grid(Player player)
         {
+            Player = player;
             Monsters = new List<Monster>()
             {
                 new Monster(1,3,3),
@@ -20,11 +28,14 @@ namespace RollSpelGrupp6.Classes
                 new Monster(10,9,23),
                 new Monster(20,3,37)
             };
+            MaxMonstersOnBoard = Monsters.Count;
             GameGrid = new char[18][];
             for (int i = 0; i < GameGrid.Length; i++)
             {
                 GameGrid[i] = new char[64];
             }
+            IsMonsterSpawning = false;
+            IsFightUICurrentUI = false;
         }
 
         public void GenerateGrid()
@@ -88,14 +99,38 @@ namespace RollSpelGrupp6.Classes
                 }
                 Console.Write("\n");
             }
-            //foreach (char[] array in GameGrid)
-            //{
-            //    foreach (char c in array)
-            //    {
-            //        Console.Write(c);
-            //    }
-            //    Console.Write("\n");
-            //}
+
+        }
+
+        public void AddMonster()
+        {
+            lock (ListOfMonstersLock)
+            {
+                bool monsterAdded = false;
+                Thread.Sleep(5000);
+                while (!monsterAdded)
+                {
+                    Monster monster = new Monster(Player.Level + 2, Generator.RandomNumber(1, 16), Generator.RandomNumber(1, 62));
+                    foreach (Monster monsterInList in Monsters)
+                    {
+                        if (!monster.Location.Equals(monsterInList.Location) &&
+                            !monster.Location.Equals(Player.Location) &&
+                            !(GameGrid[monster.Location.Row][monster.Location.Col] is '_') &&
+                            !(GameGrid[monster.Location.Row][monster.Location.Col] is '|'))
+                        {
+                            Monsters.Add(monster);
+                            if (!IsFightUICurrentUI)
+                            {
+                                Console.SetCursorPosition(monster.Location.Col, monster.Location.Row);
+                                Console.Write("X");
+                            }
+                            monsterAdded = true;
+                            IsMonsterSpawning = false;
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

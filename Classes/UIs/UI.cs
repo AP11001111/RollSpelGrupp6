@@ -1,6 +1,7 @@
 ﻿using RollSpelGrupp6.Structures;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -9,18 +10,22 @@ namespace RollSpelGrupp6.Classes
         public FightUI FightUI { get; set; }
         public Grid GameGrid { get; set; }
         public Player Player { get; set; }
+        public Generator Generator { get; set; }
         public Monster Monster { get; set; }
         public bool StopGame { get; set; }
         public bool IsConsoleCleared { get; set; }
+
         private Coordinate NewPlayerLocation;
 
         public UI()
         {
-            GameGrid = new Grid();
-            Player = new Player(); //Setting input parameter as (1,1) to avoid the error
-            //FightUI = new FightUI(Player);
+            Player = new Player();
+            GameGrid = new Grid(Player);
+            Generator = new Generator();
+            FightUI = new FightUI(Generator);
             StopGame = false;
             IsConsoleCleared = false;
+
             NewPlayerLocation = new Coordinate();
         }
 
@@ -34,6 +39,12 @@ namespace RollSpelGrupp6.Classes
             Player.PlayerInventory.PrintInventory();
             while (!StopGame)
             {
+                if (!GameGrid.IsMonsterSpawning && GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
+                {
+                    GameGrid.IsMonsterSpawning = true;
+                    Thread addMonster = new Thread(GameGrid.AddMonster);
+                    addMonster.Start();
+                }
                 if (IsConsoleCleared)
                 {
                     Console.Clear();
@@ -43,6 +54,7 @@ namespace RollSpelGrupp6.Classes
                     Console.SetCursorPosition(0, 19);
                     Player.PlayerInventory.PrintInventory();
                     IsConsoleCleared = false;
+                    GameGrid.IsFightUICurrentUI = false;
                 }
                 TakeInput();
                 if (Player.PlayerInventory.IsContentUpdated)
@@ -114,14 +126,17 @@ namespace RollSpelGrupp6.Classes
                         //if (NewPlayerLocation.Row == monster.Location.Row && NewPlayerLocation.Col == monster.Location.Row)
                         if (NewPlayerLocation.Equals(monster.Location))
                         {
+                            GameGrid.IsFightUICurrentUI = true;
                             Console.SetCursorPosition(72, 0);
-                            //StartFight(monster);
-                            FightUI = new FightUI(Player, monster);
                             Console.Clear();
-                            FightUI.Combat();
+                            FightUI.Combat(Player, monster);
                             Console.Clear();
-                            GameGrid.Monsters.Remove(monster);
+                            lock (GameGrid.ListOfMonstersLock)
+                            {
+                                GameGrid.Monsters.Remove(monster);
+                            }
                             IsConsoleCleared = true;
+
                             break;
                         }
                     }
