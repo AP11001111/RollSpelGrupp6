@@ -20,8 +20,8 @@ namespace RollSpelGrupp6.Classes
         public UI()
         {
             Player = new Player();
-            GameGrid = new Grid(Player);
             Generator = new Generator();
+            GameGrid = new Grid(Player);
             FightUI = new FightUI(Generator);
             StopGame = false;
             IsConsoleCleared = false;
@@ -42,7 +42,7 @@ namespace RollSpelGrupp6.Classes
                 if (!GameGrid.IsMonsterSpawning && GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
                 {
                     GameGrid.IsMonsterSpawning = true;
-                    Thread addMonster = new Thread(GameGrid.AddMonster);
+                    Thread addMonster = new Thread(GameGrid.RespawnMonster);
                     addMonster.Start();
                 }
                 if (IsConsoleCleared)
@@ -123,7 +123,6 @@ namespace RollSpelGrupp6.Classes
                 {
                     foreach (Monster monster in GameGrid.Monsters)
                     {
-                        //if (NewPlayerLocation.Row == monster.Location.Row && NewPlayerLocation.Col == monster.Location.Row)
                         if (NewPlayerLocation.Equals(monster.Location))
                         {
                             GameGrid.IsFightUICurrentUI = true;

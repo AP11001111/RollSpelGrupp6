@@ -21,19 +21,19 @@ namespace RollSpelGrupp6.Classes
         public Grid(Player player)
         {
             Player = player;
-            Monsters = new List<Monster>()
-            {
-                new Monster(1,3,3),
-                new Monster(3,13,30),
-                new Monster(10,9,23),
-                new Monster(20,3,37)
-            };
-            MaxMonstersOnBoard = Monsters.Count;
+            MaxMonstersOnBoard = 4;
+            Monsters = new List<Monster>();
             GameGrid = new char[18][];
             for (int i = 0; i < GameGrid.Length; i++)
             {
                 GameGrid[i] = new char[64];
             }
+
+            for (int i = 0; i < MaxMonstersOnBoard; i++)
+            {
+                SpawnMonster();
+            }
+
             IsMonsterSpawning = false;
             IsFightUICurrentUI = false;
         }
@@ -99,38 +99,53 @@ namespace RollSpelGrupp6.Classes
                 }
                 Console.Write("\n");
             }
-
         }
 
-        public void AddMonster()
+        public void RespawnMonster()
         {
             lock (ListOfMonstersLock)
             {
-                bool monsterAdded = false;
                 Thread.Sleep(5000);
-                while (!monsterAdded)
+                Monster spawnedMonster = SpawnMonster();
+                if (!IsFightUICurrentUI)
                 {
-                    Monster monster = new Monster(Player.Level + 2, Generator.RandomNumber(1, 16), Generator.RandomNumber(1, 62));
-                    foreach (Monster monsterInList in Monsters)
+                    Console.SetCursorPosition(spawnedMonster.Location.Col, spawnedMonster.Location.Row);
+                    Console.Write("X");
+                }
+                IsMonsterSpawning = false;
+            }
+        }
+
+        public Monster SpawnMonster()
+        {
+            bool monsterAdded = false;
+            Monster monsterToReturn = new Monster(Player.Level + 2, Generator.RandomNumber(1, 16), Generator.RandomNumber(1, 62));
+            if (Monsters.Count == 0 &&
+               !monsterToReturn.Location.Equals(Player.Location) &&
+               !(GameGrid[monsterToReturn.Location.Row][monsterToReturn.Location.Col] is '_') &&
+               !(GameGrid[monsterToReturn.Location.Row][monsterToReturn.Location.Col] is '|'))
+            {
+                Monsters.Add(monsterToReturn);
+                return monsterToReturn;
+            }
+            while (!monsterAdded)
+            {
+                Monster monster = new Monster(Player.Level + 2, Generator.RandomNumber(1, 16), Generator.RandomNumber(1, 62));
+                foreach (Monster monsterInList in Monsters)
+                {
+                    if (!monster.Location.Equals(monsterInList.Location) &&
+                        !monster.Location.Equals(Player.Location) &&
+                        !(GameGrid[monster.Location.Row][monster.Location.Col] is '_') &&
+                        !(GameGrid[monster.Location.Row][monster.Location.Col] is '|'))
                     {
-                        if (!monster.Location.Equals(monsterInList.Location) &&
-                            !monster.Location.Equals(Player.Location) &&
-                            !(GameGrid[monster.Location.Row][monster.Location.Col] is '_') &&
-                            !(GameGrid[monster.Location.Row][monster.Location.Col] is '|'))
-                        {
-                            Monsters.Add(monster);
-                            if (!IsFightUICurrentUI)
-                            {
-                                Console.SetCursorPosition(monster.Location.Col, monster.Location.Row);
-                                Console.Write("X");
-                            }
-                            monsterAdded = true;
-                            IsMonsterSpawning = false;
-                            break;
-                        }
+                        Monsters.Add(monster);
+                        monsterToReturn = monster;
+                        monsterAdded = true;
+                        break;
                     }
                 }
             }
+            return monsterToReturn;
         }
     }
 }
