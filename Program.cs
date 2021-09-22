@@ -11,6 +11,10 @@ namespace RollSpelGrupp6
         private static void Main(string[] args)
         {
             UI gameUI = new UI();
+            //Grid grid = new Grid(new Player());
+            //grid.GenerateGrid();
+            //grid.PrintGrid();
+            //Thread.Sleep(10000);
             gameUI.StartUI();
         }
     }

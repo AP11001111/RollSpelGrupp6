@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RollSpelGrupp6.Classes.UIs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,25 +17,25 @@ namespace RollSpelGrupp6.Classes
             Generator = generator;
         }
 
-        public void Combat(Player player, Monster monster)
+        public bool Combat(Player player, Monster monster)
         {
+            bool winner = true;
             Player = player;
             Monster = monster;
             int rond = 0;
             bool combat = true;
 
             //CreateMonster(); // Skapa en ny fiende och beväpnar den
-            Player.DressUp();
-            Player.Preparations(); // Adderar attackskada samt defence
+            //Player.Preparations(); // Adderar attackskada samt defence
             Monster.DressUp();
-            Monster.Preparations();
-
-
-            
-
+            //Monster.Preparations();
 
             while (combat)
             {
+                if (monster.IsBoss)
+                {
+                    Printer.PrintInColor(ConsoleColor.Yellow, "BOSS FIGHT");
+                }
                 if (combat)
                 {
                     rond++;
@@ -43,14 +44,19 @@ namespace RollSpelGrupp6.Classes
                 }
 
                 Monster.TakeDamage(Player.DoDamage());
-                
+
                 Console.WriteLine($"{Player.Name} inflicted {Player.Damage} damage to {Monster.Name}");
                 Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
 
                 if (Monster.HP < 1)
                 {
+                    Player.Score++;
                     Console.WriteLine($"{Monster.Name} is defeated.");
-
+                    Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
+                    if (Player.Experience >= Player.ExperienceBreakpoint)
+                    {
+                        Player.IncreaseLevel();
+                    }
                     combat = false;
                 }
                 else
@@ -65,7 +71,10 @@ namespace RollSpelGrupp6.Classes
                 if (Player.HP < 1)
                 {
                     Console.WriteLine($"{Player.Name} as been slayed.");
+                    Player.Lives.LivesLeft--;
 
+                    Player.HP = Player.MaxHP;
+                    winner = false;
                     combat = false;
                 }
 
@@ -75,10 +84,7 @@ namespace RollSpelGrupp6.Classes
                 Console.ReadLine();
                 Console.Clear();
             }
-        }
-
-        public void CombatTemp()
-        {
+            return winner;
         }
 
         //public void CreateMonster()

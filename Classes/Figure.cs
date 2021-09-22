@@ -11,6 +11,7 @@ namespace RollSpelGrupp6.Classes
         public Coordinate Location { get; set; }
 
         public int HP { get; set; }
+        public int MaxHP { get; set; }
 
         public int Damage { get; set; }
         public int Defence { get; set; }
@@ -25,23 +26,22 @@ namespace RollSpelGrupp6.Classes
         public void Preparations()
         {
             Defence += Helmet.Defence + Armor.Defence;
-            HP += Helmet.HP + Armor.HP;
+            MaxHP = HP + Helmet.HP + Armor.HP;
+            HP = MaxHP;
         }
 
         public void DressUp()
         {
             Weapon myWeapon = new Weapon();
-            CheckStuff(myWeapon);
+
             Helmet myHelmet = new Helmet();
-            CheckStuff(myHelmet);
+
             Armor myArmor = new Armor();
-            CheckStuff(myArmor);
-            Console.WriteLine("Tryck för att fortsätta.\n");
-            Console.ReadLine();
-            Console.Clear();
+
             this.Weapon = myWeapon;
             this.Helmet = myHelmet;
             this.Armor = myArmor;
+            this.Preparations();
         }
 
         public static void CheckStuff(Equipment equipment)
@@ -95,6 +95,7 @@ namespace RollSpelGrupp6.Classes
                 HP = 0;
             }
         }
+
         public bool HitOrMIss()
         {
             //int hit = Generator.OneToHundred();

@@ -75,7 +75,10 @@ namespace RollSpelGrupp6.Classes
                 table.AddRow(RowBuilder(i));
             }
 
-            table.Write(Format.Alternative);
+            var tableLives = new ConsoleTable("Lives", "*", "*", "*");
+
+            //table.Write(Format.Alternative);
+            tableLives.Write(Format.Alternative);
 
             //foreach (Equipment[] equipmentArray in InventoryContents)
             //{
