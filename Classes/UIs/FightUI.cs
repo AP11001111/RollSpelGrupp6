@@ -118,17 +118,17 @@ namespace RollSpelGrupp6.Classes
                     Console.WriteLine("Du hittade ett bättre vapen!");
                 }
             }
-            if(armor.DropChance > Generator.OneToHundred())
+            if (armor.DropChance > Generator.OneToHundred())
             {
-                if(armor.Defence > player.Armor.Defence)
+                if (armor.Defence > player.Armor.Defence)
                 {
                     player.Armor = armor;
                     Console.WriteLine("Du hittade en bättre rustning!");
                 }
             }
-            if(helmet.DropChance > Generator.OneToHundred())
+            if (helmet.DropChance > Generator.OneToHundred())
             {
-                if(helmet.Defence > player.Helmet.Defence)
+                if (helmet.Defence > player.Helmet.Defence)
                 {
                     player.Helmet = helmet;
                     Console.WriteLine("Du hittade en bättre hjälm!");
