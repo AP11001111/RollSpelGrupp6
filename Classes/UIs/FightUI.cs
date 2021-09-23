@@ -29,10 +29,6 @@ namespace RollSpelGrupp6.Classes
             Monster.DressUp();
             Monster.Preparations();
 
-
-            
-
-
             while (combat)
             {
                 if (combat)
@@ -42,9 +38,11 @@ namespace RollSpelGrupp6.Classes
                     Console.WriteLine($"<<<[ ROND {rond} ]>>>\n");
                 }
 
-                Monster.TakeDamage(Player.DoDamage());
+                int damage = Player.DoDamage();
+
+                Monster.TakeDamage(damage);
                 
-                Console.WriteLine($"{Player.Name} inflicted {Player.Damage} damage to {Monster.Name}");
+                Console.WriteLine($"{Player.Name} inflicted {damage} damage to {Monster.Name}");
                 Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
 
                 if (Monster.HP < 1)
@@ -55,9 +53,10 @@ namespace RollSpelGrupp6.Classes
                 }
                 else
                 {
+                    damage = Monster.DoDamage();
                     Player.TakeDamage(Monster.DoDamage());
 
-                    Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {Monster.Damage} skada");
+                    Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {damage} skada");
                     Console.WriteLine($"{Player.Name} har {Player.HP} HP left.\n");
                     //Console.WriteLine($"\nEfter Combat-Metoden har {Player.Name} {Player.HP} HP kvar.\n");
                 }
