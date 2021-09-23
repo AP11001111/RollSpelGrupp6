@@ -5,7 +5,8 @@ namespace RollSpelGrupp6.Classes
     public class Monster : Figure
     {
         public bool IsBoss { get; set; }
-
+        public int EquipmentDropChance = 1;
+        public int PotionDropChance = 1;
         public Monster(int level, int row, int col, bool isBoss = false)
         {
             Location = new Coordinate(row, col);

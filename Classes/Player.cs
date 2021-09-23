@@ -8,7 +8,7 @@ namespace RollSpelGrupp6.Classes
         public int HighScore { get; set; }
         public int Score { get; set; }
         public Lives Lives { get; set; }
-
+        public int Potions { get; set; }
         public int baseHP { get; set; }
         public Inventory PlayerInventory { get; set; }
         public int Experience { get; set; }
@@ -28,6 +28,7 @@ namespace RollSpelGrupp6.Classes
             Dodge = 5;
             Experience = 0;
             ExperienceBreakpoint = 2;
+            Potions = 3;
         }
 
         public void IncreaseLevel()
@@ -36,6 +37,12 @@ namespace RollSpelGrupp6.Classes
             Experience -= ExperienceBreakpoint;
             ExperienceBreakpoint = ExperienceBreakpoint * 3 / 2;
             MaxHP = MaxHP * 11 / 10;
+            HP = MaxHP;
+        }
+
+        public void TakePotion()
+        {
+            Potions--;
             HP = MaxHP;
         }
 
@@ -50,6 +57,7 @@ namespace RollSpelGrupp6.Classes
             Dodge = 5;
             Experience = 0;
             ExperienceBreakpoint = 2;
+            Potions = 3;
         }
 
         public int CompareTo(Player player)
