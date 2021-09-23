@@ -13,6 +13,7 @@ namespace RollSpelGrupp6.Classes
         public Player Player { get; set; }
         public Generator Generator { get; set; }
         public Monster Monster { get; set; }
+        public string PlayerUsername { get; set; }
         public bool StopGame { get; set; }
         public bool IsConsoleCleared { get; set; }
         public bool IsPlayerFightWinner { get; set; }
@@ -22,8 +23,9 @@ namespace RollSpelGrupp6.Classes
         public UI()
         {
             Generator = new Generator();
-            Player = new Player();
-            Player.DressUp();
+            //Player = new Player();
+            //Player.DressUp();
+            SetUpUI();
             GameGrid = new Grid(Player);
             FightUI = new FightUI(Generator);
             StopGame = false;
@@ -40,29 +42,10 @@ namespace RollSpelGrupp6.Classes
             Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
             Console.WriteLine("@");
             Console.SetCursorPosition(0, 19);
-            //Console.WriteLine($"{Player.Name} HP: {Player.HP}\tLevel: {Player.Level}\tWeapon damage range: {Player.Weapon.HighDamage} to {Player.Weapon.HighDamage}");
             PrintUserInformation();
             Player.Lives.PrintLives();
-            //Player.PlayerInventory.PrintInventory();
             while (!StopGame)
             {
-                //if (!GameGrid.IsMonsterSpawning)
-                //{
-                //    if (GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
-                //    {
-                //        GameGrid.IsMonsterSpawning = true;
-                //        Thread addMonster = new Thread(GameGrid.RespawnMonster);
-                //        addMonster.Start();
-                //        //GameGrid.RespawnMonster();
-                //    }
-                //    else if (GameGrid.Boss.Count is 0)
-                //    {
-                //        GameGrid.IsMonsterSpawning = true;
-                //        Thread addBoss = new Thread(GameGrid.RespawnBoss);
-                //        addBoss.Start();
-                //        //GameGrid.RespawnBoss();
-                //    }
-                //}
                 if (!GameGrid.IsMonsterSpawning && GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
                 {
                     if (!GameGrid.IsRespawnedMonsterPrinted)
@@ -87,12 +70,9 @@ namespace RollSpelGrupp6.Classes
                     Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
                     Console.WriteLine("@");
                     Console.SetCursorPosition(0, 19);
-                    //Console.WriteLine($"{Player.Name} HP: {Player.HP}\tLevel: {Player.Level}\tWeapon damage range: {Player.Weapon.HighDamage} to {Player.Weapon.HighDamage}");
                     PrintUserInformation();
                     Player.Lives.PrintLives();
-                    //Player.PlayerInventory.PrintInventory();
                     IsConsoleCleared = false;
-                    //GameGrid.IsFightUICurrentUI = false;
                 }
                 TakeInput();
                 if (Player.PlayerInventory.IsContentUpdated)
@@ -100,6 +80,35 @@ namespace RollSpelGrupp6.Classes
                     //update the bag shown on screen
                 }
             }
+            if (StopGame)
+            {
+                PlayerDatabase.AddUserToPlayerDatabase(PlayerUsername, Player);
+                PlayerDatabase.WriteToPlayerDatabase();
+                Console.SetCursorPosition(0, 29);
+            }
+        }
+
+        private void SetUpUI()
+        {
+            bool isUsernameAccepted = false;
+            Printer.PrintInColor(ConsoleColor.Yellow, "Välkommen till spelet");
+            Printer.PrintInColor(ConsoleColor.Yellow, "\nAnge användarnamn");
+            PlayerUsername = Console.ReadLine().ToLower();
+            while (!isUsernameAccepted)
+            {
+                if (PlayerUsername.Length > 1
+                    && !PlayerUsername.Contains(" ")
+                    && !PlayerUsername.Contains("\\"))
+                {
+                    isUsernameAccepted = true;
+                    break;
+                }
+                Printer.PrintInColor(ConsoleColor.Red, "\nOgiltigt värde.\nAnvändarnamnet måste vara minst 2 tecken lång och kan inte innehålla ' ' och '\\'");
+                PlayerUsername = Console.ReadLine().ToLower();
+            }
+            PlayerDatabase.ReadFromPlayerDatabase();
+            Player = PlayerDatabase.GetUserFromPlayerDatabase(PlayerUsername);
+            Console.Clear();
         }
 
         private void TakeInput()
@@ -132,7 +141,6 @@ namespace RollSpelGrupp6.Classes
                     break;
 
                 case ConsoleKey.Escape:
-                    Console.SetCursorPosition(0, 29);
                     StopGame = true;
                     break;
 
@@ -205,9 +213,6 @@ namespace RollSpelGrupp6.Classes
         {
             GameGrid.IsFightUICurrentUI = true;
             Console.Clear();
-            //if (FightUI.Combat(Player, monster))
-            //{
-            //}
             IsPlayerFightWinner = FightUI.Combat(Player, monster);
             Console.Clear();
             if (Player.Lives.LivesLeft == 0)

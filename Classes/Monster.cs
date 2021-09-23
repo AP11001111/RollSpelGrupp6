@@ -1,7 +1,4 @@
 ﻿using RollSpelGrupp6.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -24,8 +21,6 @@ namespace RollSpelGrupp6.Classes
             }
             HP = 10 * level;
             Dodge = 5;
-            //SetLevel(level);
-            //Initiate();
         }
 
         //Preparations

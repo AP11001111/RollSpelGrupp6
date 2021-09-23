@@ -24,11 +24,7 @@ namespace RollSpelGrupp6.Classes
             Monster = monster;
             int rond = 0;
             bool combat = true;
-
-            //CreateMonster(); // Skapa en ny fiende och beväpnar den
-            //Player.Preparations(); // Adderar attackskada samt defence
             Monster.DressUp();
-            //Monster.Preparations();
 
             while (combat)
             {
@@ -46,7 +42,7 @@ namespace RollSpelGrupp6.Classes
                 int damage = Player.DoDamage();
 
                 Monster.TakeDamage(damage);
-                
+
                 Console.WriteLine($"{Player.Name} inflicted {damage} damage to {Monster.Name}");
                 Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
 
@@ -56,7 +52,7 @@ namespace RollSpelGrupp6.Classes
                     Console.WriteLine($"{Monster.Name} is defeated.");
 
                     Drop(player);
-                    
+
                     Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
                     if (Player.Experience >= Player.ExperienceBreakpoint)
                     {
@@ -122,17 +118,17 @@ namespace RollSpelGrupp6.Classes
                     Printer.PrintInColor(ConsoleColor.Green, "Du hittade ett bättre vapen!");
                 }
             }
-            if(armor.DropChance > Generator.OneToHundred())
+            if (armor.DropChance > Generator.OneToHundred())
             {
-                if(armor.Defence > player.Armor.Defence)
+                if (armor.Defence > player.Armor.Defence)
                 {
                     player.Armor = armor;
                     Printer.PrintInColor(ConsoleColor.Green, "Du hittade en bättre rustning!");
                 }
             }
-            if(helmet.DropChance > Generator.OneToHundred())
+            if (helmet.DropChance > Generator.OneToHundred())
             {
-                if(helmet.Defence > player.Helmet.Defence)
+                if (helmet.Defence > player.Helmet.Defence)
                 {
                     player.Helmet = helmet;
                     Printer.PrintInColor(ConsoleColor.Green, "Du hittade en bättre hjälm!");
