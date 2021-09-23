@@ -118,7 +118,7 @@ namespace RollSpelGrupp6.Classes
                 if (weapon.LowDamage > player.Weapon.LowDamage)
                 {
                     player.Weapon = weapon;
-                    Console.WriteLine("Du hittade ett bättre vapen!");
+                    Printer.PrintInColor(ConsoleColor.Green, "Du hittade ett bättre vapen!");
                 }
             }
             if (armor.DropChance > Generator.OneToHundred())
@@ -126,7 +126,7 @@ namespace RollSpelGrupp6.Classes
                 if (armor.Defence > player.Armor.Defence)
                 {
                     player.Armor = armor;
-                    Console.WriteLine("Du hittade en bättre rustning!");
+                    Printer.PrintInColor(ConsoleColor.Green, "Du hittade en bättre rustning!");
                 }
             }
             if (helmet.DropChance > Generator.OneToHundred())
@@ -134,7 +134,7 @@ namespace RollSpelGrupp6.Classes
                 if (helmet.Defence > player.Helmet.Defence)
                 {
                     player.Helmet = helmet;
-                    Console.WriteLine("Du hittade en bättre hjälm!");
+                    Printer.PrintInColor(ConsoleColor.Green, "Du hittade en bättre hjälm!");
                 }
             }
         }

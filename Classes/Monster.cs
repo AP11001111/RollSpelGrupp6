@@ -2,7 +2,7 @@
 
 namespace RollSpelGrupp6.Classes
 {
-    internal class Monster : Figure
+    public class Monster : Figure
     {
         public bool IsBoss { get; set; }
 
@@ -10,7 +10,15 @@ namespace RollSpelGrupp6.Classes
         {
             Location = new Coordinate(row, col);
             IsBoss = isBoss;
-            Name = "Plattjordare";
+            Level = level;
+            if (isBoss)
+            {
+                Name = "Anti-Vaccer: Karen";
+            }
+            else
+            {
+                Name = "Plattjordare";
+            }
             HP = 10 * level;
             Dodge = 5;
         }

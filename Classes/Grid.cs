@@ -151,7 +151,7 @@ namespace RollSpelGrupp6.Classes
 
             while (!monsterAdded)
             {
-                Monster monster = new Monster(Player.Level + 2, Generator.RandomNumber(1, 15), Generator.RandomNumber(1, 62));
+                Monster monster = new Monster(Player.Level, Generator.RandomNumber(1, 15), Generator.RandomNumber(1, 62));
                 if (Monsters.Count == 0 &&
                     !monster.Location.Equals(Player.Location) &&
                     !(GameGrid[monster.Location.Row][monster.Location.Col] is '_') &&
@@ -182,7 +182,7 @@ namespace RollSpelGrupp6.Classes
             Monster monsterToReturn = new Monster(1, 1, 1, true);
             while (!monsterAdded)
             {
-                Monster monster = new Monster(Player.Level + 100, Generator.RandomNumber(14, 16), Generator.RandomNumber(55, 62), true);
+                Monster monster = new Monster(Player.Level + 1, Generator.RandomNumber(14, 16), Generator.RandomNumber(55, 62), true);
                 if (Boss.Count == 0 &&
                    !monster.Location.Equals(Player.Location) &&
                    !(GameGrid[monster.Location.Row][monster.Location.Col] is '_') &&

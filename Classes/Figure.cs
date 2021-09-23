@@ -31,10 +31,11 @@ namespace RollSpelGrupp6.Classes
         public void DressUp()
         {
             Weapon myWeapon = new Weapon();
-
+            myWeapon.SetLevel(Level);
             Helmet myHelmet = new Helmet();
-
+            myHelmet.SetLevel(Level);
             Armor myArmor = new Armor();
+            myArmor.SetLevel(Level);
 
             this.Weapon = myWeapon;
             this.Helmet = myHelmet;
