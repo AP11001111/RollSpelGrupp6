@@ -1,7 +1,5 @@
 ﻿using RollSpelGrupp6.Classes.UIs;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -24,11 +22,7 @@ namespace RollSpelGrupp6.Classes
             Monster = monster;
             int rond = 0;
             bool combat = true;
-
-            //CreateMonster(); // Skapa en ny fiende och beväpnar den
-            //Player.Preparations(); // Adderar attackskada samt defence
             Monster.DressUp();
-            //Monster.Preparations();
 
             while (combat)
             {
@@ -85,17 +79,6 @@ namespace RollSpelGrupp6.Classes
                 Console.Clear();
             }
             return winner;
-        }
-
-        //public void CreateMonster()
-        //{
-        //    Monster enemy = new Monster(Player.Level);
-        //    enemy = Equipment.DressTheMonster(enemy);
-        //    Monster = enemy;
-        //}
-
-        public static void MonsterDefeated()
-        {
         }
     }
 }

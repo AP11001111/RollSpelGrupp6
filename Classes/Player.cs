@@ -13,7 +13,6 @@ namespace RollSpelGrupp6.Classes
         public int Experience { get; set; }
         public int ExperienceBreakpoint { get; set; }
         public Coordinate NewPlayerLocation { get; set; }
-        //public Coordinate Location { get; set; }
 
         public Player()
         {
@@ -38,81 +37,5 @@ namespace RollSpelGrupp6.Classes
             MaxHP = MaxHP * 11 / 10;
             HP = MaxHP;
         }
-
-        //Recalculates the stats
-        //private void PreparePlayer()
-        //{
-        //    Defence = Helmet.Defence + Armor.Defence;
-        //    //HP = Helmet.HP + Armor.HP
-        //    MaxHP = HP + Helmet.HP + Armor.HP;
-        //}
     }
-
-    //public class Player : Figure
-    //{
-    //    public Inventory PlayerInventory { get; set; }
-    //    public int Experience { get; set; }
-    //    public int ExperienceBreakpoint { get; set; }
-
-    //    //Constructor
-    //    public Player()
-    //    {
-    //        Location = new Coordinate(1, 1);
-
-    //        PlayerInventory = new Inventory();
-    //        Initiate();
-    //        Setup();
-    //    }
-
-    //    //Sets a character to beginning, level 1
-    //    private void Initiate()
-    //    {
-    //        Level = 1;
-    //        Experience = 0;
-    //        ExperienceBreakpoint = 4;
-    //    }
-
-    //    //
-    //    public void GainExperience(int monsterLevel)
-    //    {
-    //        Experience = 2 * monsterLevel;
-    //        if (Experience >= ExperienceBreakpoint)
-    //        {
-    //            ExperienceBreakpoint += 4;
-    //            LevelUp();
-    //        }
-    //    }
-
-    //    public void LevelUp()
-    //    {
-    //        Level++;
-    //        Setup();
-    //    }
-
-    //    //Player attacks
-    //    public override void Attack(Figure figure)
-    //    {
-    //        figure.TakeDamage(AttackPower);
-    //        Console.WriteLine($"Du gör {AttackPower} skada på Monster. Den har {figure.HealthPoints} left!");
-    //    }
-
-    //    //Player takes damage
-    //    public override void TakeDamage(int damage)
-    //    {
-    //        HealthPoints -= damage - Armor;
-    //        if (HealthPoints <= 0)
-    //        {
-    //            Console.WriteLine("You died!");
-    //            Respawn();
-    //            //ResetMap();
-    //        }
-    //    }
-
-    //    //Respawns the player back to level 1
-    //    public void Respawn()
-    //    {
-    //        Initiate();
-    //        Setup();
-    //    }
-    //}
 }

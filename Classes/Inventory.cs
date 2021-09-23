@@ -74,27 +74,7 @@ namespace RollSpelGrupp6.Classes
             {
                 table.AddRow(RowBuilder(i));
             }
-
-            var tableLives = new ConsoleTable("Lives", "*", "*", "*");
-
-            //table.Write(Format.Alternative);
-            tableLives.Write(Format.Alternative);
-
-            //foreach (Equipment[] equipmentArray in InventoryContents)
-            //{
-            //    foreach (Equipment equipment in equipmentArray)
-            //    {
-            //        if (equipment is null)
-            //        {
-            //            Console.Write("Empty\t");
-            //        }
-            //        else
-            //        {
-            //            Console.Write(equipment + "\t");
-            //        }
-            //    }
-            //    Console.WriteLine();
-            //}
+            table.Write(Format.Alternative);
         }
 
         private string[] RowBuilder(int rowIndex)

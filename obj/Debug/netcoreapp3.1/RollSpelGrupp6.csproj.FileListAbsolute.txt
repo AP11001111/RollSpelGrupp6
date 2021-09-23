@@ -30,3 +30,4 @@ C:\Users\IBAMPA\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\ConsoleTable
 C:\Users\IBAMPA\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.csproj.CopyComplete
 C:\Users\Martin\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\ConsoleTables.dll
 C:\Users\Martin\source\repos\RollSpelGrupp6\obj\Debug\netcoreapp3.1\RollSpelGrupp6.csproj.CopyComplete
+C:\Users\IBAMPA\source\repos\RollSpelGrupp6\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
