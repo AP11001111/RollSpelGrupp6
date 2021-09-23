@@ -59,7 +59,6 @@ namespace RollSpelGrupp6.Classes
         public static void GetTop10Players()
         {
             ListOfTop10Players = PlayersData.Values.ToList();
-            //ListOfTop10Players.OrderBy(player => player.HighScore);
             ListOfTop10Players.Sort();
             ListOfTop10Players.Reverse();
             if (ListOfTop10Players.Count > 10)
@@ -79,7 +78,6 @@ namespace RollSpelGrupp6.Classes
             if (player.HighScore >= ListOfTop10Players[^1].HighScore)
             {
                 ListOfTop10Players.Add(player);
-                //ListOfTop10Players.OrderByDescending(player => player.HighScore);
                 ListOfTop10Players.Sort();
                 ListOfTop10Players.Reverse();
             }
