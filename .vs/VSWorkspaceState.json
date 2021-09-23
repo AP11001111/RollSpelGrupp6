@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Classes",
+    "\\Classes\\UIs"
   ],
-  "SelectedNode": "\\Program.cs",
+  "SelectedNode": "\\RollSpelGrupp6.sln",
   "PreviewInSolutionExplorer": false
 }

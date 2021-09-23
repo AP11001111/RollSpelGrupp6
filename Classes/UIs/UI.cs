@@ -44,7 +44,7 @@ namespace RollSpelGrupp6.Classes
             Console.SetCursorPosition(0, 19);
             PrintUserInformation();
             PrintPlayerRankings();
-            Player.Lives.PrintLives();
+            //Player.Lives.PrintLives();
             while (!StopGame)
             {
                 if (!GameGrid.IsMonsterSpawning && GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
@@ -74,7 +74,7 @@ namespace RollSpelGrupp6.Classes
                     Console.SetCursorPosition(0, 19);
                     PrintUserInformation();
                     PrintPlayerRankings();
-                    Player.Lives.PrintLives();
+                    //Player.Lives.PrintLives();
                     IsConsoleCleared = false;
                 }
                 TakeInput();
@@ -102,10 +102,11 @@ namespace RollSpelGrupp6.Classes
 
         private void SetUpUI()
         {
+            StartScreen();
             bool isUsernameAccepted = false;
             Printer.PrintInColor(ConsoleColor.Yellow, "Välkommen till spelet");
-            Printer.PrintInColor(ConsoleColor.Yellow, "\nAnge användarnamn");
-            PlayerUsername = Console.ReadLine().ToLower();
+            Printer.PrintInColor(ConsoleColor.Yellow, "\nAnge användarnamn: ", false);
+            PlayerUsername = Console.ReadLine().ToUpper();
             while (!isUsernameAccepted)
             {
                 if (PlayerUsername.Length > 1
@@ -166,18 +167,7 @@ namespace RollSpelGrupp6.Classes
                     Player.ResetPlayer();
                     break;
 
-                case ConsoleKey.I:
-
-                    //Implement part for choosing equipment
-
-                    //internal void SetEquipment(int equipmentType)
-                    //{
-                    //    //Take equipment position from user
-                    //    //PlayerBag.BagContents[equipmentType - 1][equipmentPosition] as current equipment
-                    //    throw new NotImplementedException();
-                    //}
-                    //Player.SetEquipment(1);
-                    break;
+                
             }
         }
 
@@ -240,6 +230,7 @@ namespace RollSpelGrupp6.Classes
             if (Player.Lives.LivesLeft == 0)
             {
                 Printer.PrintInColor(ConsoleColor.Red, ($"SLUT PÅ LIV. DIN POÄNG BLEV {Player.Score} !!!"));
+                Thread.Sleep(3000);
                 StopGame = true;
             }
 
@@ -250,8 +241,8 @@ namespace RollSpelGrupp6.Classes
         private void PrintUserInformation()
         {
             string bossDamage = GameGrid.Boss.Count is 0 ? "Respawning" : GameGrid.Boss[0].HP.ToString();
-            var tableUserInformation = new ConsoleTable("Player", "Level", "Experience", "Level Upgrade At", "Total Health", "Damage", "Boss Health", "Score", "High Score");
-            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} points", $"{Player.ExperienceBreakpoint} points", $"{Player.HP}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}", $"{Player.Score}", $"{Player.HighScore}");
+            var tableUserInformation = new ConsoleTable("Spelare", "Level", "Exp", "Ny level vid", "Hälsa", "HP-flaska", "Attackskada", "Boss-HP", "Poäng", "High Score", "Liv kvar");
+            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} ", $"{Player.ExperienceBreakpoint} ", $"{Player.HP}", $"{Player.Potions}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}", $"{Player.Score}", $"{Player.HighScore}", $"{Player.Lives.LivesLeft}");
             tableUserInformation.Write(Format.Alternative);
         }
 

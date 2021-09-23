@@ -64,11 +64,11 @@ namespace RollSpelGrupp6.Classes
 
         public int DoDamage()
         {
-            bool hitOrMiss = HitOrMIss();
-            if (!hitOrMiss)
+           
+            if (!IsHit())
             {
-                Printer.PrintInColor(ConsoleColor.Red, "Attans, du missade!");
-                //Console.WriteLine("Du missade!");
+                Printer.PrintInColor(ConsoleColor.Red, "Attans, en miss!");
+                
                 return 0;
             }
             int critHit = Generator.OneToHundred();
@@ -77,8 +77,8 @@ namespace RollSpelGrupp6.Classes
             if (this.Weapon.CritChance >= critHit)
             {
                 Printer.PrintInColor(ConsoleColor.Green, "Kritisk träff!");
-                //Console.WriteLine("Critical Hit!");
-                Damage *= 2; // Om Critdamage
+                
+                Damage *= 2; 
 
                 return Damage;
             }
@@ -98,7 +98,7 @@ namespace RollSpelGrupp6.Classes
             }
         }
 
-        public bool HitOrMIss()
+        public bool IsHit()
         {
             int hit = Generator.OneToHundred();
             if (hit < Dodge)

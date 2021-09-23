@@ -57,6 +57,7 @@ namespace RollSpelGrupp6.Classes
             Dodge = 5;
             Experience = 0;
             ExperienceBreakpoint = 2;
+            Potions = 3;
         }
 
         public int CompareTo(Player player)

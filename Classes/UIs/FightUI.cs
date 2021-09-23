@@ -48,9 +48,7 @@ namespace RollSpelGrupp6.Classes
 
                 Monster.TakeDamage(damage);
                 
-                //Console.WriteLine($"{Player.Name} åsamkade {damage} damage to {Monster.Name}");
-                //Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
-
+                
                 Console.WriteLine($"{Player.Name} åsamkade {Monster.Name} {damage} skada");
                 Console.WriteLine($"{Monster.Name} har {Monster.HP} HP left.\n");
 
@@ -62,10 +60,12 @@ namespace RollSpelGrupp6.Classes
                         Player.HighScore = Player.Score;
                     }
                     PlayerDatabase.UpdateListOfTop10Players(Player);
-                    Console.WriteLine($"{Monster.Name} is defeated.");
+                    Console.WriteLine($"{Monster.Name} har dräpts.");
+                    
 
-                    Drop(player);
 
+                    //Drop(player);
+                    Drop();
                     Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
                     if (Player.Experience >= Player.ExperienceBreakpoint)
                     {
@@ -76,7 +76,7 @@ namespace RollSpelGrupp6.Classes
                 else
                 {
                     damage = Monster.DoDamage();
-                    Player.TakeDamage(Monster.DoDamage());
+                    Player.TakeDamage(damage);
 
                     Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {damage} skada");
                     Console.WriteLine($"{Player.Name} har {Player.HP} HP left.\n");
@@ -120,6 +120,8 @@ namespace RollSpelGrupp6.Classes
             {
                 TypeOfDrop();
             }
+
+            DropPotions(dropChanceList[1]);
         }
 
         public void DropPotions(int mark)
@@ -127,6 +129,7 @@ namespace RollSpelGrupp6.Classes
             if (mark >= Monster.PotionDropChance)
             {
                 Player.Potions++;
+                Console.WriteLine($"\n{Monster.Name} tappade en HP-flaska");
             }
         }
 
