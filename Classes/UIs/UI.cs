@@ -67,7 +67,7 @@ namespace RollSpelGrupp6.Classes
                 {
                     Console.Clear();
                     GameGrid.PrintGrid();
-                    Console.SetCursorPosition(GameGrid.GameGrid[0].Length, 0);
+                    Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
                     Console.WriteLine("@");
                     Console.SetCursorPosition(0, 19);
                     PrintUserInformation();
@@ -251,7 +251,7 @@ namespace RollSpelGrupp6.Classes
         private void PrintPlayerRankings()
         {
             var tableOfHighScores = new ConsoleTable("Player", "Score");
-            foreach (Player player in PlayerDatabase.GetTop10Players())
+            foreach (Player player in PlayerDatabase.ListOfTop10Players)
             {
                 tableOfHighScores.AddRow($"{player.Name}", $"{player.HighScore}");
             }

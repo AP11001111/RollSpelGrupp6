@@ -53,6 +53,7 @@ namespace RollSpelGrupp6.Classes
                     {
                         Player.HighScore = Player.Score;
                     }
+                    PlayerDatabase.UpdateListOfTop10Players(Player);
                     Console.WriteLine($"{Monster.Name} is defeated.");
 
                     Drop(player);

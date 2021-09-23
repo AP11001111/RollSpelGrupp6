@@ -1,4 +1,5 @@
-﻿using RollSpelGrupp6.Classes;
+﻿using System;
+using RollSpelGrupp6.Classes;
 
 namespace RollSpelGrupp6
 {
@@ -6,6 +7,8 @@ namespace RollSpelGrupp6
     {
         private static void Main(string[] args)
         {
+            Console.WindowHeight = 40;
+            Console.WindowWidth = 120;
             UI gameUI = new UI();
             gameUI.StartUI();
         }

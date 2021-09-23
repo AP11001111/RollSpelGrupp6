@@ -3,7 +3,7 @@ using System;
 
 namespace RollSpelGrupp6.Classes
 {
-    public class Player : Figure
+    public class Player : Figure, IComparable<Player>
     {
         public int HighScore { get; set; }
         public int Score { get; set; }
@@ -39,7 +39,7 @@ namespace RollSpelGrupp6.Classes
             HP = MaxHP;
         }
 
-        internal void ResetPlayer()
+        public void ResetPlayer()
         {
             Lives.LivesLeft = 3;
             Score = 0;
@@ -50,6 +50,23 @@ namespace RollSpelGrupp6.Classes
             Dodge = 5;
             Experience = 0;
             ExperienceBreakpoint = 2;
+        }
+
+        public int CompareTo(Player player)
+        {
+            return HighScore.CompareTo(player.HighScore);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Player player &&
+                   Name == player.Name &&
+                   HighScore == player.HighScore;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Name, HighScore);
         }
     }
 }
