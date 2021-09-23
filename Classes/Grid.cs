@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-
 namespace RollSpelGrupp6.Classes
 {
     internal class Grid
@@ -183,7 +182,7 @@ namespace RollSpelGrupp6.Classes
             Monster monsterToReturn = new Monster(1, 1, 1, true);
             while (!monsterAdded)
             {
-                Monster monster = new Monster(Player.Level + 10, Generator.RandomNumber(14, 16), Generator.RandomNumber(55, 62), true);
+                Monster monster = new Monster(Player.Level + 100, Generator.RandomNumber(14, 16), Generator.RandomNumber(55, 62), true);
                 if (Boss.Count == 0 &&
                    !monster.Location.Equals(Player.Location) &&
                    !(GameGrid[monster.Location.Row][monster.Location.Col] is '_') &&

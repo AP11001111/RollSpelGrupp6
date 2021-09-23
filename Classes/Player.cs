@@ -5,6 +5,7 @@ namespace RollSpelGrupp6.Classes
 {
     public class Player : Figure
     {
+        public int HighScore { get; set; }
         public int Score { get; set; }
         public Lives Lives { get; set; }
 
@@ -36,6 +37,19 @@ namespace RollSpelGrupp6.Classes
             ExperienceBreakpoint = ExperienceBreakpoint * 3 / 2;
             MaxHP = MaxHP * 11 / 10;
             HP = MaxHP;
+        }
+
+        internal void ResetPlayer()
+        {
+            Lives.LivesLeft = 3;
+            Score = 0;
+            baseHP = 100;
+            Location = new Coordinate(1, 1);
+            Level = 1;
+            HP = baseHP;
+            Dodge = 5;
+            Experience = 0;
+            ExperienceBreakpoint = 2;
         }
     }
 }

@@ -49,6 +49,10 @@ namespace RollSpelGrupp6.Classes
                 if (Monster.HP < 1)
                 {
                     Player.Score++;
+                    if (Player.HighScore < Player.Score)
+                    {
+                        Player.HighScore = Player.Score;
+                    }
                     Console.WriteLine($"{Monster.Name} is defeated.");
 
                     Drop(player);
@@ -105,7 +109,6 @@ namespace RollSpelGrupp6.Classes
             Weapon weapon = new Weapon();
             Armor armor = new Armor();
             Helmet helmet = new Helmet();
-
             weapon.SetLevel(player.Level);
             armor.SetLevel(player.Level);
             helmet.SetLevel(player.Level);

@@ -2,6 +2,7 @@
 using RollSpelGrupp6.Classes.UIs;
 using RollSpelGrupp6.Structures;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace RollSpelGrupp6.Classes
@@ -23,8 +24,6 @@ namespace RollSpelGrupp6.Classes
         public UI()
         {
             Generator = new Generator();
-            //Player = new Player();
-            //Player.DressUp();
             SetUpUI();
             GameGrid = new Grid(Player);
             FightUI = new FightUI(Generator);
@@ -43,6 +42,7 @@ namespace RollSpelGrupp6.Classes
             Console.WriteLine("@");
             Console.SetCursorPosition(0, 19);
             PrintUserInformation();
+            PrintPlayerRankings();
             Player.Lives.PrintLives();
             while (!StopGame)
             {
@@ -67,10 +67,11 @@ namespace RollSpelGrupp6.Classes
                 {
                     Console.Clear();
                     GameGrid.PrintGrid();
-                    Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
+                    Console.SetCursorPosition(GameGrid.GameGrid[0].Length, 0);
                     Console.WriteLine("@");
                     Console.SetCursorPosition(0, 19);
                     PrintUserInformation();
+                    PrintPlayerRankings();
                     Player.Lives.PrintLives();
                     IsConsoleCleared = false;
                 }
@@ -82,9 +83,18 @@ namespace RollSpelGrupp6.Classes
             }
             if (StopGame)
             {
-                PlayerDatabase.AddUserToPlayerDatabase(PlayerUsername, Player);
-                PlayerDatabase.WriteToPlayerDatabase();
-                Console.SetCursorPosition(0, 29);
+                if (Player.Lives.LivesLeft == 0)
+                {
+                    Player.ResetPlayer();
+                    PlayerDatabase.AddUserToPlayerDatabase(PlayerUsername, Player);
+                    PlayerDatabase.WriteToPlayerDatabase();
+                }
+                else
+                {
+                    PlayerDatabase.AddUserToPlayerDatabase(PlayerUsername, Player);
+                    PlayerDatabase.WriteToPlayerDatabase();
+                    Console.SetCursorPosition(0, 29);
+                }
             }
         }
 
@@ -97,13 +107,14 @@ namespace RollSpelGrupp6.Classes
             while (!isUsernameAccepted)
             {
                 if (PlayerUsername.Length > 1
+                    && PlayerUsername.Length < 15
                     && !PlayerUsername.Contains(" ")
                     && !PlayerUsername.Contains("\\"))
                 {
                     isUsernameAccepted = true;
                     break;
                 }
-                Printer.PrintInColor(ConsoleColor.Red, "\nOgiltigt värde.\nAnvändarnamnet måste vara minst 2 tecken lång och kan inte innehålla ' ' och '\\'");
+                Printer.PrintInColor(ConsoleColor.Red, "\nOgiltigt värde.\nAnvändarnamnet måste vara mellan 2 och 15 tecken lång och kan inte innehålla ' ' och '\\'");
                 PlayerUsername = Console.ReadLine().ToLower();
             }
             PlayerDatabase.ReadFromPlayerDatabase();
@@ -142,6 +153,10 @@ namespace RollSpelGrupp6.Classes
 
                 case ConsoleKey.Escape:
                     StopGame = true;
+                    break;
+
+                case ConsoleKey.R:
+                    Player.ResetPlayer();
                     break;
 
                 case ConsoleKey.I:
@@ -228,9 +243,19 @@ namespace RollSpelGrupp6.Classes
         private void PrintUserInformation()
         {
             string bossDamage = GameGrid.Boss.Count is 0 ? "Respawning" : GameGrid.Boss[0].HP.ToString();
-            var tableUserInformation = new ConsoleTable("Player", "Level", "Experience", "Level Upgrade At", "Total Health", "Damage", "Boss Health");
-            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} points", $"{Player.ExperienceBreakpoint} points", $"{Player.HP}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}");
+            var tableUserInformation = new ConsoleTable("Player", "Level", "Experience", "Level Upgrade At", "Total Health", "Damage", "Boss Health", "Score", "High Score");
+            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} points", $"{Player.ExperienceBreakpoint} points", $"{Player.HP}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}", $"{Player.Score}", $"{Player.HighScore}");
             tableUserInformation.Write(Format.Alternative);
+        }
+
+        private void PrintPlayerRankings()
+        {
+            var tableOfHighScores = new ConsoleTable("Player", "Score");
+            foreach (Player player in PlayerDatabase.GetTop10Players())
+            {
+                tableOfHighScores.AddRow($"{player.Name}", $"{player.HighScore}");
+            }
+            tableOfHighScores.Write(Format.Alternative);
         }
     }
 }

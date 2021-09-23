@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace RollSpelGrupp6.Classes
@@ -50,6 +51,17 @@ namespace RollSpelGrupp6.Classes
             playerToReturn.Name = username;
             playerToReturn.DressUp();
             return playerToReturn;
+        }
+
+        public static List<Player> GetTop10Players()
+        {
+            List<Player> listOfTop10Players = PlayersData.Values.ToList();
+            listOfTop10Players.OrderByDescending(player => player.HighScore);
+            if (listOfTop10Players.Count > 10)
+            {
+                return listOfTop10Players.GetRange(0, 10);
+            }
+            return listOfTop10Players;
         }
     }
 }
