@@ -1,5 +1,7 @@
 ﻿using RollSpelGrupp6.Classes.UIs;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -37,15 +39,20 @@ namespace RollSpelGrupp6.Classes
                     Console.WriteLine($"<<<[ ROND {rond} ]>>>\n");
                 }
 
-                Monster.TakeDamage(Player.DoDamage());
+                int damage = Player.DoDamage();
 
-                Console.WriteLine($"{Player.Name} inflicted {Player.Damage} damage to {Monster.Name}");
+                Monster.TakeDamage(damage);
+
+                Console.WriteLine($"{Player.Name} inflicted {damage} damage to {Monster.Name}");
                 Console.WriteLine($"{Monster.Name} has {Monster.HP} HP left.\n");
 
                 if (Monster.HP < 1)
                 {
                     Player.Score++;
                     Console.WriteLine($"{Monster.Name} is defeated.");
+
+                    Drop(player);
+
                     Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
                     if (Player.Experience >= Player.ExperienceBreakpoint)
                     {
@@ -55,9 +62,10 @@ namespace RollSpelGrupp6.Classes
                 }
                 else
                 {
+                    damage = Monster.DoDamage();
                     Player.TakeDamage(Monster.DoDamage());
 
-                    Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {Monster.Damage} skada");
+                    Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {damage} skada");
                     Console.WriteLine($"{Player.Name} har {Player.HP} HP left.\n");
                     //Console.WriteLine($"\nEfter Combat-Metoden har {Player.Name} {Player.HP} HP kvar.\n");
                 }
@@ -79,6 +87,53 @@ namespace RollSpelGrupp6.Classes
                 Console.Clear();
             }
             return winner;
+        }
+
+        //public void CreateMonster()
+        //{
+        //    Monster enemy = new Monster(Player.Level);
+        //    enemy = Equipment.DressTheMonster(enemy);
+        //    Monster = enemy;
+        //}
+
+        public static void MonsterDefeated()
+        {
+        }
+
+        public void Drop(Player player)
+        {
+            Weapon weapon = new Weapon();
+            Armor armor = new Armor();
+            Helmet helmet = new Helmet();
+
+            weapon.SetLevel(player.Level);
+            armor.SetLevel(player.Level);
+            helmet.SetLevel(player.Level);
+
+            if (weapon.DropChance > Generator.OneToHundred())
+            {
+                if (weapon.LowDamage > player.Weapon.LowDamage)
+                {
+                    player.Weapon = weapon;
+                    Console.WriteLine("Du hittade ett bättre vapen!");
+                }
+            }
+            if(armor.DropChance > Generator.OneToHundred())
+            {
+                if(armor.Defence > player.Armor.Defence)
+                {
+                    player.Armor = armor;
+                    Console.WriteLine("Du hittade en bättre rustning!");
+                }
+            }
+            if(helmet.DropChance > Generator.OneToHundred())
+            {
+                if(helmet.Defence > player.Helmet.Defence)
+                {
+                    player.Helmet = helmet;
+                    Console.WriteLine("Du hittade en bättre hjälm!");
+                }
+            }
         }
     }
 }

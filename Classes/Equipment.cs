@@ -10,6 +10,8 @@ namespace RollSpelGrupp6.Classes
         public Player Player { get; set; }
 
         public string Name { get; set; }
+        public int Level { get; set; }
+        public int DropChance { get; set; }
 
         public int Defence { get; set; }
         public int LowDefence { get; set; }
@@ -33,29 +35,34 @@ namespace RollSpelGrupp6.Classes
         //}
     }
 
-    public class Weapon : Equipment
+    
+    public abstract class DefenseEquipment : Equipment
     {
-        public Weapon()
-        {
-            Name = "Sword";
-
-            LowDamage = 25;
-            HighDamage = 50;
-
-            LowCrit = 1;
-            HighCrit = 10;
-            //CritChance = Generator.RandomNumber(LowCrit, HighCrit, Rnd);
-            CritChance = Generator.RandomNumber(LowCrit, HighCrit);
-        }
-    }
-
-    public class DefenseEquipment : Equipment
-    {
+        public abstract void init();
+        public abstract void SetLevel(int level);
+        public abstract void IncrementStats();
     }
 
     public class Helmet : DefenseEquipment
     {
         public Helmet()
+        {
+            init();
+            SetLevel(1);
+        }
+
+        public override void IncrementStats()
+        {
+            LowDefence += 2;
+            HighDefence += 2;
+            Defence = Generator.RandomNumber(LowDefence, HighDefence);
+
+            LowHP += 2;
+            HighHp += 2;
+            HP = Generator.RandomNumber(LowHP, HighHp);
+        }
+
+        public override void init()
         {
             Name = "Helmet";
 
@@ -66,12 +73,42 @@ namespace RollSpelGrupp6.Classes
             LowHP = 5;
             HighHp = 12;
             HP = Generator.RandomNumber(LowHP, HighHp);
+
+            DropChance = 33;
+        }
+
+        public override void SetLevel(int level)
+        {
+            Level = level;
+            if (level > 1)
+            {
+                for (int i = 0; i < level; i++)
+                {
+                    IncrementStats();
+                }
+            }
         }
     }
 
     public class Armor : DefenseEquipment
     {
         public Armor()
+        {
+            init();
+        }
+
+        public override void IncrementStats()
+        {
+            LowDefence += 4;
+            HighDefence += 4;
+            Defence = Generator.RandomNumber(LowDefence, HighDefence);
+
+            LowHP += 4;
+            HighHp += 4;
+            HP = Generator.RandomNumber(LowHP, HighHp);
+        }
+
+        public override void init()
         {
             Name = "Armor";
 
@@ -82,6 +119,20 @@ namespace RollSpelGrupp6.Classes
             LowHP = 10;
             HighHp = 20;
             HP = Generator.RandomNumber(LowHP, HighHp);
+
+            DropChance = 33;
+        }
+
+        public override void SetLevel(int level)
+        {
+            Level = level;
+            if (level > 1)
+            {
+                for (int i = 0; i < level; i++)
+                {
+                    IncrementStats();
+                }
+            }
         }
     }
 
