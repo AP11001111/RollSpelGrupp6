@@ -1,7 +1,8 @@
-﻿using RollSpelGrupp6.Structures;
+﻿using ConsoleTables;
+using RollSpelGrupp6.Classes.UIs;
+using RollSpelGrupp6.Structures;
 using System;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -14,17 +15,20 @@ namespace RollSpelGrupp6.Classes
         public Monster Monster { get; set; }
         public bool StopGame { get; set; }
         public bool IsConsoleCleared { get; set; }
+        public bool IsPlayerFightWinner { get; set; }
 
         private Coordinate NewPlayerLocation;
 
         public UI()
         {
-            Player = new Player();
             Generator = new Generator();
+            Player = new Player();
+            Player.DressUp();
             GameGrid = new Grid(Player);
             FightUI = new FightUI(Generator);
             StopGame = false;
             IsConsoleCleared = false;
+            IsPlayerFightWinner = true;
 
             NewPlayerLocation = new Coordinate();
         }
@@ -36,14 +40,45 @@ namespace RollSpelGrupp6.Classes
             Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
             Console.WriteLine("@");
             Console.SetCursorPosition(0, 19);
-            Player.PlayerInventory.PrintInventory();
+            //Console.WriteLine($"{Player.Name} HP: {Player.HP}\tLevel: {Player.Level}\tWeapon damage range: {Player.Weapon.HighDamage} to {Player.Weapon.HighDamage}");
+            PrintUserInformation();
+            Player.Lives.PrintLives();
+            //Player.PlayerInventory.PrintInventory();
             while (!StopGame)
             {
+                //if (!GameGrid.IsMonsterSpawning)
+                //{
+                //    if (GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
+                //    {
+                //        GameGrid.IsMonsterSpawning = true;
+                //        Thread addMonster = new Thread(GameGrid.RespawnMonster);
+                //        addMonster.Start();
+                //        //GameGrid.RespawnMonster();
+                //    }
+                //    else if (GameGrid.Boss.Count is 0)
+                //    {
+                //        GameGrid.IsMonsterSpawning = true;
+                //        Thread addBoss = new Thread(GameGrid.RespawnBoss);
+                //        addBoss.Start();
+                //        //GameGrid.RespawnBoss();
+                //    }
+                //}
                 if (!GameGrid.IsMonsterSpawning && GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
                 {
+                    if (!GameGrid.IsRespawnedMonsterPrinted)
+                    {
+                        Console.SetCursorPosition(GameGrid.LastAddedMonster.Location.Col, GameGrid.LastAddedMonster.Location.Row);
+                        Printer.PrintInColor(ConsoleColor.DarkYellow, 'x', false);
+                    }
                     GameGrid.IsMonsterSpawning = true;
                     Thread addMonster = new Thread(GameGrid.RespawnMonster);
                     addMonster.Start();
+                }
+                if (!GameGrid.IsBossSpawning && GameGrid.Boss.Count == 0)
+                {
+                    GameGrid.IsBossSpawning = true;
+                    Thread addBoss = new Thread(GameGrid.RespawnBoss);
+                    addBoss.Start();
                 }
                 if (IsConsoleCleared)
                 {
@@ -52,9 +87,12 @@ namespace RollSpelGrupp6.Classes
                     Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
                     Console.WriteLine("@");
                     Console.SetCursorPosition(0, 19);
-                    Player.PlayerInventory.PrintInventory();
+                    //Console.WriteLine($"{Player.Name} HP: {Player.HP}\tLevel: {Player.Level}\tWeapon damage range: {Player.Weapon.HighDamage} to {Player.Weapon.HighDamage}");
+                    PrintUserInformation();
+                    Player.Lives.PrintLives();
+                    //Player.PlayerInventory.PrintInventory();
                     IsConsoleCleared = false;
-                    GameGrid.IsFightUICurrentUI = false;
+                    //GameGrid.IsFightUICurrentUI = false;
                 }
                 TakeInput();
                 if (Player.PlayerInventory.IsContentUpdated)
@@ -125,26 +163,69 @@ namespace RollSpelGrupp6.Classes
                     {
                         if (NewPlayerLocation.Equals(monster.Location))
                         {
-                            GameGrid.IsFightUICurrentUI = true;
-                            Console.Clear();
-                            FightUI.Combat(Player, monster);
-                            Console.Clear();
-                            lock (GameGrid.ListOfMonstersLock)
+                            FightUiTransition(monster);
+                            if (IsPlayerFightWinner)
                             {
-                                GameGrid.Monsters.Remove(monster);
+                                lock (GameGrid.MonsterLock)
+                                {
+                                    GameGrid.Monsters.Remove(monster);
+                                }
                             }
-                            IsConsoleCleared = true;
-
                             break;
                         }
                     }
-                    Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
-                    Console.Write(' ');
-                    Console.SetCursorPosition(NewPlayerLocation.Col, NewPlayerLocation.Row);
-                    Console.Write('@');
-                    Player.Location.SetCoordinate(NewPlayerLocation.Row, NewPlayerLocation.Col);
+                    if (GameGrid.Boss.Count > 0)
+                    {
+                        if (NewPlayerLocation.Equals(GameGrid.Boss[0].Location))
+                        {
+                            FightUiTransition(GameGrid.Boss[0]);
+                            if (IsPlayerFightWinner)
+                            {
+                                lock (GameGrid.MonsterLock)
+                                {
+                                    GameGrid.Boss.RemoveAt(0);
+                                }
+                            }
+                        }
+                    }
+                    if (IsPlayerFightWinner)
+                    {
+                        Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
+                        Printer.PrintInColor(ConsoleColor.Black, ' ');
+                        Console.SetCursorPosition(NewPlayerLocation.Col, NewPlayerLocation.Row);
+                        Console.Write('@');
+                        Player.Location.SetCoordinate(NewPlayerLocation.Row, NewPlayerLocation.Col);
+                    }
+                    IsPlayerFightWinner = true;
                 }
             }
+        }
+
+        private void FightUiTransition(Monster monster)
+        {
+            GameGrid.IsFightUICurrentUI = true;
+            Console.Clear();
+            //if (FightUI.Combat(Player, monster))
+            //{
+            //}
+            IsPlayerFightWinner = FightUI.Combat(Player, monster);
+            Console.Clear();
+            if (Player.Lives.LivesLeft == 0)
+            {
+                Printer.PrintInColor(ConsoleColor.Red, ($"YOU ARE OUT OF LIVES. YOUR SCORE IS {Player.Score}"));
+                StopGame = true;
+            }
+
+            GameGrid.IsFightUICurrentUI = false;
+            IsConsoleCleared = true;
+        }
+
+        private void PrintUserInformation()
+        {
+            string bossDamage = GameGrid.Boss.Count is 0 ? "Respawning" : GameGrid.Boss[0].HP.ToString();
+            var tableUserInformation = new ConsoleTable("Player", "Level", "Experience", "Level Upgrade At", "Total Health", "Damage", "Boss Health");
+            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} points", $"{Player.ExperienceBreakpoint} points", $"{Player.HP}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}");
+            tableUserInformation.Write(Format.Alternative);
         }
     }
 }
