@@ -1,8 +1,5 @@
-﻿using RollSpelGrupp6.Classes;
-using RollSpelGrupp6.Classes.UIs;
-using System;
-using System.Linq;
-using System.Threading;
+﻿using System;
+using RollSpelGrupp6.Classes;
 
 namespace RollSpelGrupp6
 {
@@ -10,6 +7,8 @@ namespace RollSpelGrupp6
     {
         private static void Main(string[] args)
         {
+            Console.WindowHeight = 40;
+            Console.WindowWidth = 120;
             UI gameUI = new UI();
             UI.StartScreen();
             //Grid grid = new Grid(new Player());

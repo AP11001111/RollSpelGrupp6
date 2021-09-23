@@ -1,8 +1,6 @@
 ﻿using RollSpelGrupp6.Classes.UIs;
 using RollSpelGrupp6.Structures;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
@@ -34,10 +32,11 @@ namespace RollSpelGrupp6.Classes
         public void DressUp()
         {
             Weapon myWeapon = new Weapon();
-
+            myWeapon.SetLevel(Level);
             Helmet myHelmet = new Helmet();
-
+            myHelmet.SetLevel(Level);
             Armor myArmor = new Armor();
+            myArmor.SetLevel(Level);
 
             this.Weapon = myWeapon;
             this.Helmet = myHelmet;
@@ -101,7 +100,6 @@ namespace RollSpelGrupp6.Classes
 
         public bool HitOrMIss()
         {
-            //int hit = Generator.OneToHundred();
             int hit = Generator.OneToHundred();
             if (hit < Dodge)
             {
