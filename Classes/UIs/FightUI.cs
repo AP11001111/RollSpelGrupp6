@@ -54,6 +54,9 @@ namespace RollSpelGrupp6.Classes
                 {
                     Player.Score++;
                     Console.WriteLine($"{Monster.Name} is defeated.");
+
+                    Drop(player);
+                    
                     Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
                     if (Player.Experience >= Player.ExperienceBreakpoint)
                     {
@@ -99,6 +102,42 @@ namespace RollSpelGrupp6.Classes
 
         public static void MonsterDefeated()
         {
+        }
+
+        public void Drop(Player player)
+        {
+            Weapon weapon = new Weapon();
+            Armor armor = new Armor();
+            Helmet helmet = new Helmet();
+
+            weapon.SetLevel(player.Level);
+            armor.SetLevel(player.Level);
+            helmet.SetLevel(player.Level);
+
+            if (weapon.DropChance > Generator.OneToHundred())
+            {
+                if (weapon.LowDamage > player.Weapon.LowDamage)
+                {
+                    player.Weapon = weapon;
+                    Console.WriteLine("Du hittade ett bättre vapen!");
+                }
+            }
+            if(armor.DropChance > Generator.OneToHundred())
+            {
+                if(armor.Defence > player.Armor.Defence)
+                {
+                    player.Armor = armor;
+                    Console.WriteLine("Du hittade en bättre rustning!");
+                }
+            }
+            if(helmet.DropChance > Generator.OneToHundred())
+            {
+                if(helmet.Defence > player.Helmet.Defence)
+                {
+                    player.Helmet = helmet;
+                    Console.WriteLine("Du hittade en bättre hjälm!");
+                }
+            }
         }
     }
 }
