@@ -2,6 +2,7 @@
 using RollSpelGrupp6.Classes.UIs;
 using RollSpelGrupp6.Structures;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
 namespace RollSpelGrupp6.Classes
@@ -43,6 +44,7 @@ namespace RollSpelGrupp6.Classes
             //Console.WriteLine($"{Player.Name} HP: {Player.HP}\tLevel: {Player.Level}\tWeapon damage range: {Player.Weapon.HighDamage} to {Player.Weapon.HighDamage}");
             PrintUserInformation();
             Player.Lives.PrintLives();
+            Player.PlayerInventory.PrintInventory();
             //Player.PlayerInventory.PrintInventory();
             while (!StopGame)
             {
@@ -80,6 +82,7 @@ namespace RollSpelGrupp6.Classes
                     Thread addBoss = new Thread(GameGrid.RespawnBoss);
                     addBoss.Start();
                 }
+                
                 if (IsConsoleCleared)
                 {
                     Console.Clear();
@@ -90,7 +93,7 @@ namespace RollSpelGrupp6.Classes
                     //Console.WriteLine($"{Player.Name} HP: {Player.HP}\tLevel: {Player.Level}\tWeapon damage range: {Player.Weapon.HighDamage} to {Player.Weapon.HighDamage}");
                     PrintUserInformation();
                     Player.Lives.PrintLives();
-                    //Player.PlayerInventory.PrintInventory();
+                    Player.PlayerInventory.PrintInventory();
                     IsConsoleCleared = false;
                     //GameGrid.IsFightUICurrentUI = false;
                 }
@@ -135,7 +138,11 @@ namespace RollSpelGrupp6.Classes
                     Console.SetCursorPosition(0, 29);
                     StopGame = true;
                     break;
-
+                case ConsoleKey.P:
+                    Player.TakePotion();
+                    Console.SetCursorPosition(0, 19);
+                    PrintUserInformation();
+                    break;
                 case ConsoleKey.I:
 
                     //Implement part for choosing equipment
@@ -212,7 +219,7 @@ namespace RollSpelGrupp6.Classes
             Console.Clear();
             if (Player.Lives.LivesLeft == 0)
             {
-                Printer.PrintInColor(ConsoleColor.Red, ($"YOU ARE OUT OF LIVES. YOUR SCORE IS {Player.Score}"));
+                Printer.PrintInColor(ConsoleColor.Red, ($"SLUT PÅ LIV. DIN POÄNG BLEV {Player.Score} !!!"));
                 StopGame = true;
             }
 
@@ -223,9 +230,45 @@ namespace RollSpelGrupp6.Classes
         private void PrintUserInformation()
         {
             string bossDamage = GameGrid.Boss.Count is 0 ? "Respawning" : GameGrid.Boss[0].HP.ToString();
-            var tableUserInformation = new ConsoleTable("Player", "Level", "Experience", "Level Upgrade At", "Total Health", "Damage", "Boss Health");
-            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} points", $"{Player.ExperienceBreakpoint} points", $"{Player.HP}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}");
+            var tableUserInformation = new ConsoleTable("Player", "Level", "Experience", "Level Upgrade At", "Total Health", "Health Potions", "Attack Power", "Boss Health");
+            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} points", $"{Player.ExperienceBreakpoint} points", $"{Player.HP}",$"{Player.Potions}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}");
             tableUserInformation.Write(Format.Alternative);
         }
+
+        public static void StartScreen()
+        {
+            var wordsInt = new int[3];
+            wordsInt = Generator.RandomNumberList(wordsInt, 0, 5);
+
+
+            var wordCollection1 = new string[6] { "otroligt", "vansinnigt", "fruktansvärt", "förvånansvärt", "ganska", "relativt" };
+            var wordCollection2 = new string[6] { "fantastiska", "slätstrukna", "omöjliga", "deprimerande", "nervkittlande", "dråpliga" };
+            var wordCollection3 = new string[6] { "äventyret", "strövtåget", "exkursionen", "irrfärden", "odyssén", "eskapaden" };
+            
+            string word2 = wordCollection1[wordsInt[0]];
+            string word3 = wordCollection2[wordsInt[1]];
+            string word4 = wordCollection3[wordsInt[2]];
+            string word1 = DenOrDet(word4);
+
+            Console.WriteLine("\n\n\t\t<<<══════════════════════════════════════════>>>");
+            Printer.PrintInColor(ConsoleColor.DarkRed, ($"\t\t    {word1} {word2} {word3} {word4}!"));
+                      //Console.WriteLine($"\t\t    Det {word1} {word2} äventyret! ");
+            Console.WriteLine("\t    <<<══════════════════════════════════════════════════>>>");
+
+            Console.Write("\n\n\n\t\t\tEtt mästerverk från "); Printer.PrintInColor(ConsoleColor.DarkYellow, ("6rupp"));
+
+            Console.WriteLine("\n\n\n\n\n\t\t\tTryck för att starta spelet");
+            Console.ReadLine();
+            Console.Clear();
+        }
+        public static string DenOrDet(string word)
+        {
+            if (word == "äventyret" || word == "strövtåget")
+            {
+                return "Det";
+            }
+            return "Den";
+        }
+       
     }
 }

@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
     public class Weapon : Equipment
     {
+        public int LowDamageBottom { get; set; }
+        public int LowDamageTop { get; set; }
+
+        public int HighDamageBottom { get; set; }
+        public int HighDamageTop { get; set; }
+
+       
+
+
         public Weapon()
         {
             init();
@@ -16,12 +26,20 @@ namespace RollSpelGrupp6.Classes
         private void init()
         {
             Name = "Sword";
-            LowDamage = 25;
-            HighDamage = 50;
+            
+            LowDamageBottom = 15;
+            LowDamageTop = 25;
+            LowDamage = Generator.RandomNumber(LowDamageBottom, LowDamageTop);
+
+            HighDamageBottom = 40;
+            HighDamageTop = 50;
+            HighDamage = Generator.RandomNumber(HighDamageBottom, HighDamageTop);
 
             LowCrit = 1;
             HighCrit = 10;
             CritChance = Generator.RandomNumber(LowCrit, HighCrit);
+
+            
 
             DropChance = 33;
         }
