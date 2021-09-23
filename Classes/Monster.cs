@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RollSpelGrupp6.Classes
 {
-    internal class Monster : Figure
+    public class Monster : Figure
     {
         public bool IsBoss { get; set; }
 
@@ -13,7 +13,15 @@ namespace RollSpelGrupp6.Classes
         {
             Location = new Coordinate(row, col);
             IsBoss = isBoss;
-            Name = "Plattjordare";
+            Level = level;
+            if (isBoss)
+            {
+                Name = "Anti-Vaccer: Karen";
+            }
+            else
+            {
+                Name = "Plattjordare";
+            }
             HP = 10 * level;
             Dodge = 5;
             //SetLevel(level);
@@ -26,33 +34,5 @@ namespace RollSpelGrupp6.Classes
             Defence = Helmet.Defence + Armor.Defence;
             HP = Helmet.HP + Armor.HP;
         }
-
-        //private void SetLevel(int level)
-        //{
-        //    Level = Level;
-        //}
-
-        //public override void Attack(Figure figure)
-        //{
-        //    figure.TakeDamage(AttackPower);
-        //    Console.WriteLine($"Monster gör {AttackPower} skada på Dig. Du har {figure.HealthPoints} left!");
-        //}
-
-        //public override void TakeDamage(int damage)
-        //{
-        //    HealthPoints -= damage - Armor;
-        //    if (HealthPoints <= 0)
-        //    {
-        //        Console.WriteLine("Monster died!");
-        //        //Gain experience();
-        //        //Ta bort från spelplan();
-        //    }
-        //}
-
-        //private void Initiate()
-        //{
-        //    HealthPoints = 2 * Level;
-        //    AttackPower = 1 * Level;
-        //}
     }
 }
