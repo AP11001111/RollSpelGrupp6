@@ -62,23 +62,22 @@ namespace RollSpelGrupp6.Classes
             Console.WriteLine();
         }
 
-        public (int,int) DoDamage()
+        public (int, int) DoDamage()
         {
-           
             if (!IsHit())
-            {                
-                return (0,0);
+            {
+                return (0, 0);
             }
             int critHit = Generator.OneToHundred();
             Damage = Generator.RandomNumber(this.Weapon.LowDamage, this.Weapon.HighDamage);
 
             if (this.Weapon.CritChance >= critHit)
             {
-                Damage *= 2; 
+                Damage *= 2;
 
-                return (1,Damage);
+                return (1, Damage);
             }
-            return (9,Damage);
+            return (9, Damage);
         }
 
         public int TakeDamage(int damage)
@@ -95,7 +94,7 @@ namespace RollSpelGrupp6.Classes
                 HP -= damageTaken;
             }
 
-            if(HP < 0)
+            if (HP < 0)
             {
                 HP = 0;
             }

@@ -74,7 +74,7 @@ namespace RollSpelGrupp6.Classes
             HighHp = 12;
             HP = Generator.RandomNumber(LowHP, HighHp);
 
-            DropChance = 33;
+            //DropChance = 33;
         }
 
         public override void SetLevel(int level)
@@ -120,7 +120,7 @@ namespace RollSpelGrupp6.Classes
             HighHp = 20;
             HP = Generator.RandomNumber(LowHP, HighHp);
 
-            DropChance = 33;
+            //DropChance = 33;
         }
 
         public override void SetLevel(int level)

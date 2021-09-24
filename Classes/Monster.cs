@@ -5,8 +5,8 @@ namespace RollSpelGrupp6.Classes
     public class Monster : Figure
     {
         public bool IsBoss { get; set; }
-        public int EquipmentDropChance = 33;
-        public int PotionDropChance = 60;
+        public int EquipmentDropChance = 40;
+        public int PotionDropChance = 33;
         public int BaseHP { get; set; }
 
         public Monster(int level, int row, int col, bool isBoss = false)

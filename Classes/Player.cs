@@ -10,6 +10,7 @@ namespace RollSpelGrupp6.Classes
         public Lives Lives { get; set; }
         public int Potions { get; set; }
         public int baseHP { get; set; }
+        public int baseDefense { get; set; }
         public Inventory PlayerInventory { get; set; }
         public int Experience { get; set; }
         public int ExperienceBreakpoint { get; set; }
@@ -19,6 +20,8 @@ namespace RollSpelGrupp6.Classes
         {
             Score = 0;
             baseHP = 100;
+            baseDefense = 20;
+            Defence += baseDefense;
             Lives = new Lives();
             PlayerInventory = new Inventory();
             Location = new Coordinate(1, 1 + 30);//offsetting game grid to right by 30
@@ -51,7 +54,7 @@ namespace RollSpelGrupp6.Classes
             Lives.LivesLeft = 3;
             Score = 0;
             baseHP = 100;
-            Location = new Coordinate(1, 1);
+            Location = new Coordinate(1, 1 + 30);//offsetting game grid to right by 30
             Level = 1;
             HP = baseHP;
             Dodge = 5;

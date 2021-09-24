@@ -42,7 +42,7 @@ namespace RollSpelGrupp6.Classes
                     Console.Write($"\n<<<[ "); Printer.PrintInColor(ConsoleColor.Green, $"ROND {rond}", false); Console.WriteLine(" ]>>>\n");
                 }
 
-                (int,int) damage = Player.DoDamage();
+                (int, int) damage = Player.DoDamage();
 
                 PrintFightUIHeader();
                 PrintPlayerAttackResults(damage);
@@ -55,14 +55,12 @@ namespace RollSpelGrupp6.Classes
                         Player.HighScore = Player.Score;
                     }
                     PlayerDatabase.UpdateListOfTop7Players(Player);
-                    Printer.PrintInColor(ConsoleColor.DarkYellow,  $"{Monster.Name}",  false);
+                    Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
                     Console.WriteLine($" har dräpts.");
-                    if (Drop())
+                    //Drop();
+                    if (!Drop())
                     {
-                        Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}",  false);
-                        Console.WriteLine(" droppade loot ");
                         Console.ReadKey();
-                        Console.Clear();
                     }
                     Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
                     if (Player.Experience >= Player.ExperienceBreakpoint)
@@ -81,14 +79,14 @@ namespace RollSpelGrupp6.Classes
 
                 if (Player.HP < 1)
                 {
-                    Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
-                    Console.WriteLine($" har avlidit. Beklagar.");
+                    Printer.PrintInColor(ConsoleColor.DarkCyan, $"\n{Player.Name}", false);
+                    Printer.PrintInColor(ConsoleColor.DarkRed, " har avlidit. Beklagar.");
                     Player.Lives.LivesLeft--;
 
                     Player.HP = Player.MaxHP;
                     winner = false;
                     combat = false;
-                    break;
+                    //break;
                 }
 
                 // Console.WriteLine($"\nEfter Combat-Metoden har {enemy.Name} {enemy.HP} HP kvar.\n");
@@ -100,51 +98,51 @@ namespace RollSpelGrupp6.Classes
             return winner;
         }
 
-        private void PrintPlayerAttackResults((int,int) damage)
+        private void PrintPlayerAttackResults((int, int) damage)
         {
             Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
             Console.WriteLine(" anfaller:\n");
             if (damage.Item1 is 1)
             {
-                Printer.PrintInColor(ConsoleColor.Green, "Kritisk träff!");
+                Printer.PrintInColor(ConsoleColor.Green, "Kritisk träff!\n");
             }
-            else if(damage.Item1 is 0)
+            else if (damage.Item1 is 0)
             {
                 Printer.PrintInColor(ConsoleColor.Red, "Miss!");
             }
-            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}",  false);
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
             Console.Write(" åsamkade ");
-            Printer.PrintInColor(ConsoleColor.DarkYellow,  $"{Monster.Name}",false);
+            Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
             Console.WriteLine($" {Monster.TakeDamage(damage.Item2)} skada\n");
-            Printer.PrintInColor(ConsoleColor.DarkYellow,  $"{Monster.Name}",false);
+            Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
             Console.WriteLine($" har {Monster.HP} HP left.");
             Console.WriteLine("------------------------------------\n");
         }
 
-        private void PrintMonsterAttackResults((int,int) damage)
+        private void PrintMonsterAttackResults((int, int) damage)
         {
             Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
             Console.WriteLine(" anfaller:\n");
             if (damage.Item1 is 1)
             {
-                Printer.PrintInColor(ConsoleColor.Red, "Kritisk träff!", false);
+                Printer.PrintInColor(ConsoleColor.Red, "Kritisk träff!\n", false);
             }
             else if (damage.Item1 is 0)
             {
-                Printer.PrintInColor(ConsoleColor.Green, "Miss!", false);
+                Printer.PrintInColor(ConsoleColor.Green, "Miss!");
             }
             Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
             Console.Write(" åsamkade ");
-            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}",false);
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
             Console.WriteLine($" {Player.TakeDamage(damage.Item2)} skada\n");
-            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}",false);
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
             Console.WriteLine($" har {Player.HP} HP left.");
         }
 
         private void PrintFightUIHeader()
         {
-            Printer.PrintInColor(ConsoleColor.DarkCyan,  $"{Player.Name}: ",  false);
-            Console.Write($"{Player.HP} HP   |");         
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}: ", false);
+            Console.Write($"{Player.HP} HP   |");
             Printer.PrintInColor(ConsoleColor.DarkYellow, $"   {Monster.Name}: ", false);
             Console.WriteLine($"{Monster.HP} HP");
             Console.WriteLine("===================================>\n");
@@ -155,15 +153,22 @@ namespace RollSpelGrupp6.Classes
             var dropChanceList = new int[2];
             CreateDropList(dropChanceList);
 
-            bool isEquipmentDropped = DropOrNot(dropChanceList[0]);
-
-            if (isEquipmentDropped == true)
+            if (DropOrNot(dropChanceList[0]))
             {
+                Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
+                Console.WriteLine(" droppade loot ");
+                Console.ReadKey();
+                Console.Clear();
                 TypeOfDrop();
+                return true;
+            }
+            else if (DropPotions(dropChanceList[1]))
+            {
+                Console.ReadKey();
+                return true;
             }
 
-            isEquipmentDropped = DropPotions(dropChanceList[1]);
-            return isEquipmentDropped;
+            return false;
         }
 
         public bool DropPotions(int mark)
@@ -171,7 +176,8 @@ namespace RollSpelGrupp6.Classes
             if (mark >= Monster.PotionDropChance)
             {
                 Player.Potions++;
-                Console.WriteLine($"\n{Monster.Name} tappade en HP-flaska");
+                Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
+                Console.WriteLine($" tappade en HP-flaska");
                 return true;
             }
             return false;
