@@ -21,7 +21,7 @@ namespace RollSpelGrupp6.Classes
             baseHP = 100;
             Lives = new Lives();
             PlayerInventory = new Inventory();
-            Location = new Coordinate(1, 1);
+            Location = new Coordinate(1, 1 + 30);//offsetting game grid to right by 30
             Name = "Sir Kurt";
             Level = 1;
             HP = baseHP;

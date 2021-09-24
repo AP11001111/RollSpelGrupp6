@@ -7,9 +7,10 @@ namespace RollSpelGrupp6.Classes
         public bool IsBoss { get; set; }
         public int EquipmentDropChance = 1;
         public int PotionDropChance = 1;
+
         public Monster(int level, int row, int col, bool isBoss = false)
         {
-            Location = new Coordinate(row, col);
+            Location = new Coordinate(row, col + 30);//offsetting game grid to right by 30
             IsBoss = isBoss;
             Level = level;
             if (isBoss)

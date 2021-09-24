@@ -25,7 +25,7 @@ namespace RollSpelGrupp6.Classes
             {
                 PlayersData = JsonConvert.DeserializeObject<Dictionary<string, Player>>(playersDataAsJSONString);
             }
-            GetTop10Players();
+            GetTop7Players();
         }
 
         public static void WriteToPlayerDatabase()
@@ -56,18 +56,18 @@ namespace RollSpelGrupp6.Classes
             return playerToReturn;
         }
 
-        public static void GetTop10Players()
+        public static void GetTop7Players()
         {
             ListOfTop10Players = PlayersData.Values.ToList();
             ListOfTop10Players.Sort();
             ListOfTop10Players.Reverse();
-            if (ListOfTop10Players.Count > 10)
+            if (ListOfTop10Players.Count > 7)
             {
-                ListOfTop10Players = ListOfTop10Players.GetRange(0, 10);
+                ListOfTop10Players = ListOfTop10Players.GetRange(0, 7);
             }
         }
 
-        public static void UpdateListOfTop10Players(Player player)
+        public static void UpdateListOfTop7Players(Player player)
         {
             if (ListOfTop10Players.Contains(player))
             {
@@ -81,9 +81,9 @@ namespace RollSpelGrupp6.Classes
                 ListOfTop10Players.Sort();
                 ListOfTop10Players.Reverse();
             }
-            if (ListOfTop10Players.Count > 10)
+            if (ListOfTop10Players.Count > 7)
             {
-                ListOfTop10Players = ListOfTop10Players.GetRange(0, 10);
+                ListOfTop10Players = ListOfTop10Players.GetRange(0, 7);
             }
         }
     }

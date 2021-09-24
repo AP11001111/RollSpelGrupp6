@@ -41,10 +41,10 @@ namespace RollSpelGrupp6.Classes
             GameGrid.PrintGrid();
             Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
             Console.WriteLine("@");
-            Console.SetCursorPosition(0, 19);
+            Console.SetCursorPosition(0, 18);
             PrintUserInformation();
+            Console.SetCursorPosition(0, 1);
             PrintPlayerRankings();
-            //Player.Lives.PrintLives();
             while (!StopGame)
             {
                 if (!GameGrid.IsMonsterSpawning && GameGrid.Monsters.Count < GameGrid.MaxMonstersOnBoard)
@@ -64,17 +64,17 @@ namespace RollSpelGrupp6.Classes
                     Thread addBoss = new Thread(GameGrid.RespawnBoss);
                     addBoss.Start();
                 }
-                
+
                 if (IsConsoleCleared)
                 {
                     Console.Clear();
                     GameGrid.PrintGrid();
                     Console.SetCursorPosition(Player.Location.Col, Player.Location.Row);
                     Console.WriteLine("@");
-                    Console.SetCursorPosition(0, 19);
+                    Console.SetCursorPosition(0, 18);
                     PrintUserInformation();
+                    Console.SetCursorPosition(0, 1);
                     PrintPlayerRankings();
-                    //Player.Lives.PrintLives();
                     IsConsoleCleared = false;
                 }
                 TakeInput();
@@ -102,22 +102,25 @@ namespace RollSpelGrupp6.Classes
 
         private void SetUpUI()
         {
+            Console.CursorVisible = false;
             StartScreen();
+
             bool isUsernameAccepted = false;
             Printer.PrintInColor(ConsoleColor.Yellow, "Välkommen till spelet");
             Printer.PrintInColor(ConsoleColor.Yellow, "\nAnge användarnamn: ", false);
+            Console.CursorVisible = true;
             PlayerUsername = Console.ReadLine().ToUpper();
             while (!isUsernameAccepted)
             {
                 if (PlayerUsername.Length > 1
-                    && PlayerUsername.Length < 15
+                    && PlayerUsername.Length <= 11
                     && !PlayerUsername.Contains(" ")
                     && !PlayerUsername.Contains("\\"))
                 {
                     isUsernameAccepted = true;
                     break;
                 }
-                Printer.PrintInColor(ConsoleColor.Red, "\nOgiltigt värde.\nAnvändarnamnet måste vara mellan 2 och 15 tecken lång och kan inte innehålla ' ' och '\\'");
+                Printer.PrintInColor(ConsoleColor.Red, "\nOgiltigt värde.\nAnvändarnamnet måste vara mellan 2 och 11 tecken lång och kan inte innehålla ' ' och '\\'");
                 PlayerUsername = Console.ReadLine().ToLower();
             }
             PlayerDatabase.ReadFromPlayerDatabase();
@@ -157,6 +160,7 @@ namespace RollSpelGrupp6.Classes
                 case ConsoleKey.Escape:
                     StopGame = true;
                     break;
+
                 case ConsoleKey.P:
                     Player.TakePotion();
                     Console.SetCursorPosition(0, 19);
@@ -166,8 +170,6 @@ namespace RollSpelGrupp6.Classes
                 case ConsoleKey.R:
                     Player.ResetPlayer();
                     break;
-
-                
             }
         }
 
@@ -176,8 +178,8 @@ namespace RollSpelGrupp6.Classes
             if ((NewPlayerLocation.Row >= 0
                 && NewPlayerLocation.Row < GameGrid.GameGrid.Length))
             {
-                if (!(GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col] == '_' ||
-                GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col] == '|'))
+                if (!(GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col - GameGrid.GridOffsetRight] == '_' ||
+                GameGrid.GameGrid[NewPlayerLocation.Row][NewPlayerLocation.Col - GameGrid.GridOffsetRight] == '|'))
                 {
                     foreach (Monster monster in GameGrid.Monsters)
                     {
@@ -240,10 +242,12 @@ namespace RollSpelGrupp6.Classes
 
         private void PrintUserInformation()
         {
-            string bossDamage = GameGrid.Boss.Count is 0 ? "Respawning" : GameGrid.Boss[0].HP.ToString();
-            var tableUserInformation = new ConsoleTable("Spelare", "Level", "Exp", "Ny level vid", "Hälsa", "HP-flaska", "Attackskada", "Boss-HP", "Poäng", "High Score", "Liv kvar");
-            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Level}", $"{Player.Experience} ", $"{Player.ExperienceBreakpoint} ", $"{Player.HP}", $"{Player.Potions}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}", $"{Player.Score}", $"{Player.HighScore}", $"{Player.Lives.LivesLeft}");
+            string bossDamage = GameGrid.Boss.Count is 0 ? "RESPAWNAR" : GameGrid.Boss[0].HP.ToString();
+            var tableUserInformation = new ConsoleTable("SPELARE    ", "LIV KVAR", "LEVEL", "EXP", "NY LEVEL VID", "HÄLSA", "HP-FLASKA", "ATTACKSKADA", "BOSS-HP", "POÄNG", "HIGH SCORE");
+            tableUserInformation.AddRow($"{Player.Name}", $"{Player.Lives.LivesLeft}", $"{Player.Level}", $"{Player.Experience} ", $"{Player.ExperienceBreakpoint} ", $"{Player.HP}", $"{Player.Potions}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}", $"{Player.Score}", $"{Player.HighScore}");
             tableUserInformation.Write(Format.Alternative);
+            string controls = "MOVE: WASD/piltangenter\tANVÄNDA HP-FLASKA: P\tÅTERSTÄLLA SPELET: R\tSPARA OCH STANG: Esc";
+            Printer.PrintInColor(ConsoleColor.Red, controls);
         }
 
         public static void StartScreen()
@@ -251,11 +255,10 @@ namespace RollSpelGrupp6.Classes
             var wordsInt = new int[3];
             wordsInt = Generator.RandomNumberList(wordsInt, 0, 5);
 
-
             var wordCollection1 = new string[6] { "otroligt", "vansinnigt", "fruktansvärt", "förvånansvärt", "ganska", "relativt" };
             var wordCollection2 = new string[6] { "fantastiska", "slätstrukna", "omöjliga", "deprimerande", "nervkittlande", "dråpliga" };
             var wordCollection3 = new string[6] { "äventyret", "strövtåget", "exkursionen", "irrfärden", "odyssén", "eskapaden" };
-            
+
             string word2 = wordCollection1[wordsInt[0]];
             string word3 = wordCollection2[wordsInt[1]];
             string word4 = wordCollection3[wordsInt[2]];
@@ -263,15 +266,16 @@ namespace RollSpelGrupp6.Classes
 
             Console.WriteLine("\n\n\t\t<<<══════════════════════════════════════════>>>");
             Printer.PrintInColor(ConsoleColor.DarkRed, ($"\t\t    {word1} {word2} {word3} {word4}!"));
-                      //Console.WriteLine($"\t\t    Det {word1} {word2} äventyret! ");
+            //Console.WriteLine($"\t\t    Det {word1} {word2} äventyret! ");
             Console.WriteLine("\t    <<<══════════════════════════════════════════════════>>>");
 
             Console.Write("\n\n\n\t\t\tEtt mästerverk från "); Printer.PrintInColor(ConsoleColor.DarkYellow, ("6rupp"));
 
             Console.WriteLine("\n\n\n\n\n\t\t\tTryck för att starta spelet");
-            Console.ReadLine();
+            Console.ReadKey();
             Console.Clear();
         }
+
         public static string DenOrDet(string word)
         {
             if (word == "äventyret" || word == "strövtåget")
@@ -280,11 +284,10 @@ namespace RollSpelGrupp6.Classes
             }
             return "Den";
         }
-       
 
         private void PrintPlayerRankings()
         {
-            var tableOfHighScores = new ConsoleTable("Player", "Score");
+            var tableOfHighScores = new ConsoleTable("SPELARE      ", "HIGH SCORE");
             foreach (Player player in PlayerDatabase.ListOfTop10Players)
             {
                 tableOfHighScores.AddRow($"{player.Name}", $"{player.HighScore}");

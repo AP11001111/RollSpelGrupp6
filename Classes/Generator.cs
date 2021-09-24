@@ -23,12 +23,9 @@ namespace RollSpelGrupp6
 
         public static int[] RandomNumberList(int[] randomNumberList, int lowNumber, int highNumber)
         {
-
-
             for (int i = 0; i < randomNumberList.Length; i++)
             {
                 randomNumberList[i] = Generator.RandomNumber(lowNumber, highNumber);
-
             }
             return randomNumberList;
         }

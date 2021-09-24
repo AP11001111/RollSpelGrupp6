@@ -25,7 +25,6 @@ namespace RollSpelGrupp6.Classes
             Monster = monster;
             int rond = 0;
             bool combat = true;
-            Monster.DressUp();
 
             while (combat)
             {
@@ -38,7 +37,7 @@ namespace RollSpelGrupp6.Classes
                     rond++;
                     Console.Write("Du möter en ");
                     Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}");
-                   // Console.WriteLine($"< G R O T T A N >");
+                    // Console.WriteLine($"< G R O T T A N >");
                     Console.Write($"\n<<<[ "); Console.ForegroundColor = ConsoleColor.Green; Console.Write($"ROND {rond}"); Console.ResetColor();
                     //Printer.PrintInColor(ConsoleColor.Green, $"ROND{rond}");
                     Console.WriteLine(" ]>>>\n");
@@ -47,8 +46,7 @@ namespace RollSpelGrupp6.Classes
                 int damage = Player.DoDamage();
 
                 Monster.TakeDamage(damage);
-                
-                
+
                 Console.WriteLine($"{Player.Name} åsamkade {Monster.Name} {damage} skada");
                 Console.WriteLine($"{Monster.Name} har {Monster.HP} HP left.\n");
 
@@ -59,10 +57,8 @@ namespace RollSpelGrupp6.Classes
                     {
                         Player.HighScore = Player.Score;
                     }
-                    PlayerDatabase.UpdateListOfTop10Players(Player);
+                    PlayerDatabase.UpdateListOfTop7Players(Player);
                     Console.WriteLine($"{Monster.Name} har dräpts.");
-                    
-
 
                     //Drop(player);
                     Drop();
@@ -96,7 +92,7 @@ namespace RollSpelGrupp6.Classes
                 // Console.WriteLine($"\nEfter Combat-Metoden har {enemy.Name} {enemy.HP} HP kvar.\n");
                 Console.WriteLine("===================================");
                 Console.WriteLine("Tryck för att fortsätta \n");
-                Console.ReadLine();
+                Console.ReadKey();
                 Console.Clear();
             }
             return winner;
@@ -113,7 +109,7 @@ namespace RollSpelGrupp6.Classes
         {
             var dropChanceList = new int[2];
             CreateDropList(dropChanceList);
-            
+
             bool drop = DropOrNot(dropChanceList[0]);
 
             if (drop == true)
@@ -154,7 +150,6 @@ namespace RollSpelGrupp6.Classes
                     Player.Weapon = Monster.Weapon;
                 }
             }
-
             else if (typeOfEquipmentDrop == 3)
             {
                 CompareArmor(Player.Armor, Monster.Armor);
@@ -163,10 +158,9 @@ namespace RollSpelGrupp6.Classes
                 {
                     Player.Weapon = Monster.Weapon;
                 }
-
             }
-
         }
+
         public int[] CreateDropList(int[] dropChanceList)
         {
             for (int i = 0; i < dropChanceList.Length; i++)
@@ -175,13 +169,13 @@ namespace RollSpelGrupp6.Classes
             }
             return dropChanceList;
         }
+
         public bool DropOrNot(int mark)
         {
-            if (mark>= Monster.EquipmentDropChance)
+            if (mark >= Monster.EquipmentDropChance)
             {
                 return true;
             }
-
             else
             {
                 return false;
@@ -194,13 +188,13 @@ namespace RollSpelGrupp6.Classes
             {
                 Console.Write("\nVill du byta? J/N: ");
 
-                string svar = Console.ReadLine();
+                char svar = Console.ReadKey().KeyChar;
                 //svar.ToUpper();
-                if (svar.ToUpper() == "J")
+                if (Char.ToUpper(svar) == 'J')
                 {
                     return true;
                 }
-                else if (svar.ToUpper() == "N")
+                else if (Char.ToUpper(svar) == 'N')
                 {
                     return false;
                 }
@@ -209,18 +203,16 @@ namespace RollSpelGrupp6.Classes
                     Console.WriteLine("Felaktig knapptryckning. Svara 'J' eller 'N'");
                 }
             }
-           
-        } 
+        }
+
         public void CompareWeapon()
         {
-
             Console.WriteLine("\nDenna har du på dig");
             Console.WriteLine("▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼\n");
             Console.Write($"Typ av utrustning: "); Printer.PrintInColor(ConsoleColor.Magenta, Player.Weapon.Name);
-            Console.Write($"\nSkada: "); BestEquipment(Player.Weapon.LowDamage, Monster.Weapon.LowDamage, false ); Console.Write("-");  
+            Console.Write($"\nSkada: "); BestEquipment(Player.Weapon.LowDamage, Monster.Weapon.LowDamage, false); Console.Write("-");
             BestEquipment(Player.Weapon.HighDamage, Monster.Weapon.HighDamage);
             Console.Write($"\nCritical hit chance: "); BestEquipment(Player.Weapon.CritChance, Monster.Weapon.CritChance);
-            
 
             Console.WriteLine("\n\nDenna kan du byta till");
             Console.WriteLine("▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼\n");
@@ -228,7 +220,6 @@ namespace RollSpelGrupp6.Classes
             Console.Write($"\nSkada: "); BestEquipment(Monster.Weapon.LowDamage, Player.Weapon.LowDamage, false); Console.Write("-");
             BestEquipment(Monster.Weapon.HighDamage, Player.Weapon.HighDamage);
             Console.Write($"\nCritical hit chance: "); BestEquipment(Monster.Weapon.CritChance, Player.Weapon.CritChance);
-            
         }
 
         public void CompareArmor(Equipment playerEquipment, Equipment monsterEquipment)
@@ -239,7 +230,6 @@ namespace RollSpelGrupp6.Classes
             Console.Write($"\nSkydd: "); BestEquipment(playerEquipment.Defence, monsterEquipment.Defence);
             Console.WriteLine();
             Console.Write($"Extra HP: "); BestEquipment(playerEquipment.HP, monsterEquipment.HP);
-            
 
             Console.WriteLine("\n\nDenna kan du byta till");
             Console.WriteLine("▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼ ▼\n");
@@ -247,68 +237,21 @@ namespace RollSpelGrupp6.Classes
             Console.Write($"\nSkydd: "); BestEquipment(monsterEquipment.Defence, playerEquipment.Defence);
             Console.WriteLine();
             Console.Write($"Extra HP: "); BestEquipment(monsterEquipment.HP, playerEquipment.HP);
-            
-
-
-
-            
-
         }
+
         public static void BestEquipment(int equipment1, int equipment2, bool newLine = true)
         {
             if (equipment1 > equipment2)
             {
                 Printer.PrintInColor(ConsoleColor.DarkGreen, $"{equipment1}", newLine);
-                
             }
             else if (equipment1 < equipment2)
             {
                 Printer.PrintInColor(ConsoleColor.DarkRed, $"{equipment1}", newLine);
             }
-
             else
             {
                 Printer.PrintInColor(ConsoleColor.Yellow, $"{equipment1}", newLine);
-            }
-
-
-        }
-
-
-
-
-        public void DropX(Player player)
-        {
-            Weapon weapon = new Weapon();
-            Armor armor = new Armor();
-            Helmet helmet = new Helmet();
-            weapon.SetLevel(player.Level);
-            armor.SetLevel(player.Level);
-            helmet.SetLevel(player.Level);
-
-            if (weapon.DropChance > Generator.OneToHundred())
-            {
-                if (weapon.LowDamage > player.Weapon.LowDamage)
-                {
-                    player.Weapon = weapon;
-                    Printer.PrintInColor(ConsoleColor.Green, "Du hittade ett bättre vapen!");
-                }
-            }
-            if (armor.DropChance > Generator.OneToHundred())
-            {
-                if (armor.Defence > player.Armor.Defence)
-                {
-                    player.Armor = armor;
-                    Printer.PrintInColor(ConsoleColor.Green, "Du hittade en bättre rustning!");
-                }
-            }
-            if (helmet.DropChance > Generator.OneToHundred())
-            {
-                if (helmet.Defence > player.Helmet.Defence)
-                {
-                    player.Helmet = helmet;
-                    Printer.PrintInColor(ConsoleColor.Green, "Du hittade en bättre hjälm!");
-                }
             }
         }
     }
