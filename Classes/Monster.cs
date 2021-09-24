@@ -5,14 +5,17 @@ namespace RollSpelGrupp6.Classes
     public class Monster : Figure
     {
         public bool IsBoss { get; set; }
-        public int EquipmentDropChance = 1;
-        public int PotionDropChance = 1;
+        public int EquipmentDropChance = 33;
+        public int PotionDropChance = 60;
+        public int BaseHP { get; set; }
 
         public Monster(int level, int row, int col, bool isBoss = false)
         {
             Location = new Coordinate(row, col + 30);//offsetting game grid to right by 30
             IsBoss = isBoss;
             Level = level;
+            BaseHP = 30;
+
             if (isBoss)
             {
                 Name = "Anti-Vaccer: Karen";
@@ -21,7 +24,8 @@ namespace RollSpelGrupp6.Classes
             {
                 Name = "Plattjordare";
             }
-            HP = 10 * level;
+
+            HP = BaseHP + (10 * level);
             Dodge = 5;
         }
 

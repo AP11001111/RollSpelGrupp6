@@ -30,68 +30,69 @@ namespace RollSpelGrupp6.Classes
             {
                 if (monster.IsBoss)
                 {
-                    Printer.PrintInColor(ConsoleColor.DarkRed, "BOSS FIGHT");
+                    Console.Write("[ ");
+                    Printer.PrintInColor(ConsoleColor.DarkRed, "BOSS FIGHT", false);
+                    Console.Write(" ]\n");
                 }
                 if (combat)
                 {
                     rond++;
                     Console.Write("Du möter en ");
                     Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}");
-                    // Console.WriteLine($"< G R O T T A N >");
-                    Console.Write($"\n<<<[ "); Console.ForegroundColor = ConsoleColor.Green; Console.Write($"ROND {rond}"); Console.ResetColor();
-                    //Printer.PrintInColor(ConsoleColor.Green, $"ROND{rond}");
-                    Console.WriteLine(" ]>>>\n");
+                    Console.Write($"\n<<<[ "); Printer.PrintInColor(ConsoleColor.Green, $"ROND {rond}", false); Console.WriteLine(" ]>>>\n");
                 }
 
-                int damage = Player.DoDamage();
+                (int,int) damage = Player.DoDamage();
 
-                Monster.TakeDamage(damage);
-
-                Console.WriteLine($"{Player.Name} åsamkade {Monster.Name} {damage} skada");
-                Console.WriteLine($"{Monster.Name} har {Monster.HP} HP left.\n");
+                PrintFightUIHeader();
+                PrintPlayerAttackResults(damage);
 
                 if (Monster.HP < 1)
                 {
                     Player.Score = monster.IsBoss ? Player.Score + 3 : Player.Score + 1;
-                    //Player.Score++;
                     if (Player.HighScore < Player.Score)
                     {
                         Player.HighScore = Player.Score;
                     }
                     PlayerDatabase.UpdateListOfTop7Players(Player);
-                    Console.WriteLine($"{Monster.Name} har dräpts.");
-
-                    //Drop(player);
-                    Drop();
+                    Printer.PrintInColor(ConsoleColor.DarkYellow,  $"{Monster.Name}",  false);
+                    Console.WriteLine($" har dräpts.");
+                    if (Drop())
+                    {
+                        Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}",  false);
+                        Console.WriteLine(" droppade loot ");
+                        Console.ReadKey();
+                        Console.Clear();
+                    }
                     Player.Experience = monster.IsBoss ? Player.Experience + 3 : Player.Experience + 1;
                     if (Player.Experience >= Player.ExperienceBreakpoint)
                     {
                         Player.IncreaseLevel();
                     }
                     combat = false;
+                    break;
                 }
                 else
                 {
                     damage = Monster.DoDamage();
-                    Player.TakeDamage(damage);
 
-                    Console.WriteLine($"{Monster.Name} åsamkade {Player.Name} {damage} skada");
-                    Console.WriteLine($"{Player.Name} har {Player.HP} HP left.\n");
-                    //Console.WriteLine($"\nEfter Combat-Metoden har {Player.Name} {Player.HP} HP kvar.\n");
+                    PrintMonsterAttackResults(damage);
                 }
 
                 if (Player.HP < 1)
                 {
-                    Console.WriteLine($"{Player.Name} har avlidit. Beklagar.");
+                    Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
+                    Console.WriteLine($" har avlidit. Beklagar.");
                     Player.Lives.LivesLeft--;
 
                     Player.HP = Player.MaxHP;
                     winner = false;
                     combat = false;
+                    break;
                 }
 
                 // Console.WriteLine($"\nEfter Combat-Metoden har {enemy.Name} {enemy.HP} HP kvar.\n");
-                Console.WriteLine("===================================");
+                Console.WriteLine("===================================>");
                 Console.WriteLine("Tryck för att fortsätta \n");
                 Console.ReadKey();
                 Console.Clear();
@@ -99,35 +100,81 @@ namespace RollSpelGrupp6.Classes
             return winner;
         }
 
-        //public void CreateMonster()
-        //{
-        //    Monster enemy = new Monster(Player.Level);
-        //    enemy = Equipment.DressTheMonster(enemy);
-        //    Monster = enemy;
-        //}
+        private void PrintPlayerAttackResults((int,int) damage)
+        {
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}", false);
+            Console.WriteLine(" anfaller:\n");
+            if (damage.Item1 is 1)
+            {
+                Printer.PrintInColor(ConsoleColor.Green, "Kritisk träff!");
+            }
+            else if(damage.Item1 is 0)
+            {
+                Printer.PrintInColor(ConsoleColor.Red, "Miss!");
+            }
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}",  false);
+            Console.Write(" åsamkade ");
+            Printer.PrintInColor(ConsoleColor.DarkYellow,  $"{Monster.Name}",false);
+            Console.WriteLine($" {Monster.TakeDamage(damage.Item2)} skada\n");
+            Printer.PrintInColor(ConsoleColor.DarkYellow,  $"{Monster.Name}",false);
+            Console.WriteLine($" har {Monster.HP} HP left.");
+            Console.WriteLine("------------------------------------\n");
+        }
 
-        public void Drop()
+        private void PrintMonsterAttackResults((int,int) damage)
+        {
+            Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
+            Console.WriteLine(" anfaller:\n");
+            if (damage.Item1 is 1)
+            {
+                Printer.PrintInColor(ConsoleColor.Red, "Kritisk träff!", false);
+            }
+            else if (damage.Item1 is 0)
+            {
+                Printer.PrintInColor(ConsoleColor.Green, "Miss!", false);
+            }
+            Printer.PrintInColor(ConsoleColor.DarkYellow, $"{Monster.Name}", false);
+            Console.Write(" åsamkade ");
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}",false);
+            Console.WriteLine($" {Player.TakeDamage(damage.Item2)} skada\n");
+            Printer.PrintInColor(ConsoleColor.DarkCyan, $"{Player.Name}",false);
+            Console.WriteLine($" har {Player.HP} HP left.");
+        }
+
+        private void PrintFightUIHeader()
+        {
+            Printer.PrintInColor(ConsoleColor.DarkCyan,  $"{Player.Name}: ",  false);
+            Console.Write($"{Player.HP} HP   |");         
+            Printer.PrintInColor(ConsoleColor.DarkYellow, $"   {Monster.Name}: ", false);
+            Console.WriteLine($"{Monster.HP} HP");
+            Console.WriteLine("===================================>\n");
+        }
+
+        public bool Drop()
         {
             var dropChanceList = new int[2];
             CreateDropList(dropChanceList);
 
-            bool drop = DropOrNot(dropChanceList[0]);
+            bool isEquipmentDropped = DropOrNot(dropChanceList[0]);
 
-            if (drop == true)
+            if (isEquipmentDropped == true)
             {
                 TypeOfDrop();
             }
 
-            DropPotions(dropChanceList[1]);
+            isEquipmentDropped = DropPotions(dropChanceList[1]);
+            return isEquipmentDropped;
         }
 
-        public void DropPotions(int mark)
+        public bool DropPotions(int mark)
         {
             if (mark >= Monster.PotionDropChance)
             {
                 Player.Potions++;
                 Console.WriteLine($"\n{Monster.Name} tappade en HP-flaska");
+                return true;
             }
+            return false;
         }
 
         public void TypeOfDrop()

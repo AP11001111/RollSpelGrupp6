@@ -7,11 +7,9 @@ namespace RollSpelGrupp6
     {
         private static void Main(string[] args)
         {
-            Console.WindowHeight = 28;
-            Console.WindowWidth = 125;
+            Console.WindowHeight = 20;
+            Console.WindowWidth = 85;
             UI gameUI = new UI();
-            //Grid gameGrid = new Grid(gameUI.Player, gameUI);
-            //gameUI.GameGrid = gameGrid;
             gameUI.StartUI();
         }
     }

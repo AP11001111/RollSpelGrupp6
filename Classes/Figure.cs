@@ -62,40 +62,45 @@ namespace RollSpelGrupp6.Classes
             Console.WriteLine();
         }
 
-        public int DoDamage()
+        public (int,int) DoDamage()
         {
            
             if (!IsHit())
-            {
-                Printer.PrintInColor(ConsoleColor.Red, "Attans, en miss!");
-                
-                return 0;
+            {                
+                return (0,0);
             }
             int critHit = Generator.OneToHundred();
             Damage = Generator.RandomNumber(this.Weapon.LowDamage, this.Weapon.HighDamage);
 
             if (this.Weapon.CritChance >= critHit)
             {
-                Printer.PrintInColor(ConsoleColor.Green, "Kritisk träff!");
-                
                 Damage *= 2; 
 
-                return Damage;
+                return (1,Damage);
             }
-            return Damage;
+            return (9,Damage);
         }
 
-        public void TakeDamage(int damage)
+        public int TakeDamage(int damage)
         {
-            if (damage > (Armor.HP + Helmet.HP))
+            int damageTaken = damage - (Armor.Defence + Helmet.Defence);
+
+            if (damageTaken < 0)
             {
-                HP -= damage - (Armor.HP + Helmet.HP);
+                damageTaken = 0;
             }
 
-            if (HP < 0)
+            if (damage > (Armor.HP + Helmet.HP))
+            {
+                HP -= damageTaken;
+            }
+
+            if(HP < 0)
             {
                 HP = 0;
             }
+
+            return damageTaken;
         }
 
         public bool IsHit()
