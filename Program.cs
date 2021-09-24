@@ -10,6 +10,8 @@ namespace RollSpelGrupp6
             Console.WindowHeight = 28;
             Console.WindowWidth = 125;
             UI gameUI = new UI();
+            //Grid gameGrid = new Grid(gameUI.Player, gameUI);
+            //gameUI.GameGrid = gameGrid;
             gameUI.StartUI();
         }
     }

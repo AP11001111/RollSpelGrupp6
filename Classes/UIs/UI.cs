@@ -2,8 +2,6 @@
 using RollSpelGrupp6.Classes.UIs;
 using RollSpelGrupp6.Structures;
 using System;
-using System.Security.Cryptography.X509Certificates;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace RollSpelGrupp6.Classes
@@ -26,7 +24,7 @@ namespace RollSpelGrupp6.Classes
         {
             Generator = new Generator();
             SetUpUI();
-            GameGrid = new Grid(Player);
+            GameGrid = new Grid(Player, this);
             FightUI = new FightUI(Generator);
             StopGame = false;
             IsConsoleCleared = false;
@@ -240,17 +238,23 @@ namespace RollSpelGrupp6.Classes
             IsConsoleCleared = true;
         }
 
-        private void PrintUserInformation()
+        public void PrintUserInformation()
         {
-            string bossDamage = GameGrid.Boss.Count is 0 ? "RESPAWNAR" : GameGrid.Boss[0].HP.ToString();
+            string bossDamage = GameGrid.Boss.Count is 0 ? "SPAWNAR" : GameGrid.Boss[0].MaxHP.ToString();
             var tableUserInformation = new ConsoleTable("SPELARE    ", "LIV KVAR", "LEVEL", "EXP", "NY LEVEL VID", "HÄLSA", "HP-FLASKA", "ATTACKSKADA", "BOSS-HP", "POÄNG", "HIGH SCORE");
             tableUserInformation.AddRow($"{Player.Name}", $"{Player.Lives.LivesLeft}", $"{Player.Level}", $"{Player.Experience} ", $"{Player.ExperienceBreakpoint} ", $"{Player.HP}", $"{Player.Potions}", $"{Player.Weapon.LowDamage} - {Player.Weapon.HighDamage}", $"{bossDamage}", $"{Player.Score}", $"{Player.HighScore}");
             tableUserInformation.Write(Format.Alternative);
             string controls = "MOVE: WASD/piltangenter\tANVÄNDA HP-FLASKA: P\tÅTERSTÄLLA SPELET: R\tSPARA OCH STANG: Esc";
-            Printer.PrintInColor(ConsoleColor.Red, controls);
+            Printer.PrintInColor(ConsoleColor.Blue, controls);
+            Printer.PrintInColor(ConsoleColor.Blue, "SPELARE: ", false);
+            Console.Write("@");
+            Printer.PrintInColor(ConsoleColor.Blue, "\tMONSTER: ", false);
+            Printer.PrintInColor(ConsoleColor.Yellow, 'x', false);
+            Printer.PrintInColor(ConsoleColor.Blue, "\tBOSS: ", false);
+            Printer.PrintInColor(ConsoleColor.Red, 'X');
         }
 
-        public static void StartScreen()
+        public void StartScreen()
         {
             var wordsInt = new int[3];
             wordsInt = Generator.RandomNumberList(wordsInt, 0, 5);
@@ -276,7 +280,7 @@ namespace RollSpelGrupp6.Classes
             Console.Clear();
         }
 
-        public static string DenOrDet(string word)
+        public string DenOrDet(string word)
         {
             if (word == "äventyret" || word == "strövtåget")
             {

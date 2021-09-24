@@ -11,6 +11,7 @@ namespace RollSpelGrupp6.Classes
     {
         public int GridOffsetRight { get; } = 30;
         public Monster LastAddedMonster { get; set; }
+        public UI UI { get; set; }
         public Player Player { get; set; }
         public char[][] GameGrid { get; set; }
         public List<Monster> Monsters { get; set; }
@@ -23,9 +24,10 @@ namespace RollSpelGrupp6.Classes
         public bool IsFightUICurrentUI { get; set; }
         public readonly object MonsterLock = new object();
 
-        public Grid(Player player)
+        public Grid(Player player, UI ui)
         {
             Player = player;
+            UI = ui;
             MaxMonstersOnBoard = 4;
             GameGrid = new char[18][];
             for (int i = 0; i < GameGrid.Length; i++)
@@ -110,7 +112,7 @@ namespace RollSpelGrupp6.Classes
                     }
                     if (!isMonster)
                     {
-                        Printer.PrintInColor(ConsoleColor.Blue, GameGrid[i][j], false);
+                        Printer.PrintInColor(ConsoleColor.DarkGray, GameGrid[i][j], false);
                     }
                 }
                 Console.Write("\n");
@@ -143,7 +145,8 @@ namespace RollSpelGrupp6.Classes
                 {
                     Console.SetCursorPosition(spawnedMonster.Location.Col, spawnedMonster.Location.Row);
                     Printer.PrintInColor(ConsoleColor.Red, 'X', false);
-                    IsRespawnedBossPrinted = true;
+                    Console.SetCursorPosition(0, 18);
+                    UI.PrintUserInformation();
                 }
                 IsBossSpawning = false;
             }

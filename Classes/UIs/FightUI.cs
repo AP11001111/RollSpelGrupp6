@@ -52,7 +52,8 @@ namespace RollSpelGrupp6.Classes
 
                 if (Monster.HP < 1)
                 {
-                    Player.Score++;
+                    Player.Score = monster.IsBoss ? Player.Score + 3 : Player.Score + 1;
+                    //Player.Score++;
                     if (Player.HighScore < Player.Score)
                     {
                         Player.HighScore = Player.Score;
