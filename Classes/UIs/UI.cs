@@ -275,9 +275,9 @@ namespace RollSpelGrupp6.Classes
             //Console.WriteLine($"\t\t    Det {word1} {word2} äventyret! ");
             Console.WriteLine("\t    <<<══════════════════════════════════════════════════>>>");
 
-            Console.Write("\n\n\n\t\t\t   Ett mästerverk från "); Printer.PrintInColor(ConsoleColor.DarkYellow, ("6rupp"));
+            Console.Write("\n\n\n\t\t\t\t   Ett mästerverk från "); Printer.PrintInColor(ConsoleColor.DarkYellow, ("6rupp"));
 
-            Console.WriteLine("\n\n\n\n\n\t\t\t  Tryck för att starta spelet");
+            Console.WriteLine("\n\n\n\n\n\t\t\t\t  Tryck för att starta spelet");
             Console.ReadKey();
             Console.Clear();
         }
